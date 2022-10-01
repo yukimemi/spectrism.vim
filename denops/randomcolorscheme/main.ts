@@ -119,5 +119,8 @@ export async function main(denops: Denops): Promise<void> {
     await denops.dispatcher.change();
   }, interval * 1000);
 
+  setTimeout(async () => {
+    await denops.dispatcher.change();
+  }, 100);
   clog("dps-randomcolorscheme has loaded");
 }
