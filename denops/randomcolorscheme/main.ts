@@ -64,16 +64,14 @@ export async function main(denops: Denops): Promise<void> {
           clog(`enable: ${enable}`);
           return;
         }
-        const background = await op.background.get(denops);
         const r = Math.floor(Math.random() * colorschemes.length);
         const colorscheme = colorschemes[r];
-        clog({ colorscheme, background });
+        clog({ colorscheme });
 
         await helper.execute(
           denops,
           `
           colorscheme ${colorscheme}
-          set background=${background}
         `,
         );
         if (echo) {
