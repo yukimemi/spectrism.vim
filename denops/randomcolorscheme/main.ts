@@ -43,8 +43,8 @@ export async function main(denops: Denops): Promise<void> {
       await op.runtimepath.get(denops),
       "colors/*.vim",
       true,
-      true,
-    ),
+      true
+    )
   ).map((c) => basename(c, extname(c)));
 
   clog({ colorschemes });
@@ -72,9 +72,10 @@ export async function main(denops: Denops): Promise<void> {
           denops,
           `
           colorscheme ${colorscheme}
-        `,
+        `
         );
         if (echo) {
+          await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
       } catch (e) {
@@ -101,17 +102,13 @@ export async function main(denops: Denops): Promise<void> {
     command! ChangeColorscheme call s:${denops.name}_notify('change', [])
     command! EnableRandomColorscheme call s:${denops.name}_notify('enable', [])
     command! DisableRandomColorscheme call s:${denops.name}_notify('disable', [])
-  `,
+  `
   );
 
   if (events.length) {
     await autocmd.group(denops, denops.name, (helper) => {
       helper.remove();
-      helper.define(
-        events,
-        "*",
-        `call s:${denops.name}_notify('change', [])`,
-      );
+      helper.define(events, "*", `call s:${denops.name}_notify('change', [])`);
     });
   }
 
