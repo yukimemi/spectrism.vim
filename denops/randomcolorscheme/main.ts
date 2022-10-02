@@ -75,7 +75,7 @@ export async function main(denops: Denops): Promise<void> {
         `,
         );
         if (echo) {
-          await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
+          await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
       } catch (e) {
         clog(e);
