@@ -13,6 +13,7 @@ let echo = true;
 let interval = 3600;
 let enables: string[] = [];
 let disables: string[] = [];
+let background = "";
 let enable = true;
 
 let events: autocmd.AutocmdEvent[] = [];
@@ -32,6 +33,11 @@ export async function main(denops: Denops): Promise<void> {
   interval = await vars.g.get(denops, "randomcolorscheme_interval", interval);
   enables = await vars.g.get(denops, "randomcolorscheme_enables", enables);
   disables = await vars.g.get(denops, "randomcolorscheme_disables", disables);
+  background = await vars.g.get(
+    denops,
+    "randomcolorscheme_background",
+    background,
+  );
   events = await vars.g.get(denops, "randomcolorscheme_events", events);
 
   clog({ debug, echo, enables, disables, events });
@@ -74,6 +80,9 @@ export async function main(denops: Denops): Promise<void> {
           colorscheme ${colorscheme}
         `
         );
+        if (background) {
+          await op.background.set(denops, background);
+        }
         if (echo) {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
