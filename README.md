@@ -32,6 +32,8 @@ let g:randomcolorscheme_echo = v:false                                       " W
 let g:randomcolorscheme_interval = 60                                        " Interval to change colorscheme. default: 3600 (seconds)
 let g:randomcolorscheme_enables = ["morning", "ron"]                         " Use colorscheme list. default: [] (Use all colorscheme)
 let g:randomcolorscheme_disables = ["evening", "default"]                    " Not used colorscheme list. default: []
+let g:randomcolorscheme_match = "base16"                                     " colorscheme match regexp. default: ""
+let g:randomcolorscheme_notmatch = "light"                                   " colorscheme not match regexp. default: ""
 let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"] " Event to change colorscheme. default: []
 ```
 

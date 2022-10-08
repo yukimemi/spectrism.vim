@@ -13,6 +13,8 @@ let echo = true;
 let interval = 3600;
 let enables: string[] = [];
 let disables: string[] = [];
+let match = "";
+let notmatch = "";
 let background = "";
 let enable = true;
 
@@ -33,6 +35,8 @@ export async function main(denops: Denops): Promise<void> {
   interval = await vars.g.get(denops, "randomcolorscheme_interval", interval);
   enables = await vars.g.get(denops, "randomcolorscheme_enables", enables);
   disables = await vars.g.get(denops, "randomcolorscheme_disables", disables);
+  match = await vars.g.get(denops, "randomcolorscheme_match", match);
+  notmatch = await vars.g.get(denops, "randomcolorscheme_notmatch", notmatch);
   background = await vars.g.get(
     denops,
     "randomcolorscheme_background",
@@ -40,7 +44,7 @@ export async function main(denops: Denops): Promise<void> {
   );
   events = await vars.g.get(denops, "randomcolorscheme_events", events);
 
-  clog({ debug, echo, enables, disables, events });
+  clog({ debug, echo, enables, disables, match, notmatch, background, events });
 
   // Get all colorschemes
   let colorschemes = ensureArray<string>(
@@ -49,8 +53,8 @@ export async function main(denops: Denops): Promise<void> {
       await op.runtimepath.get(denops),
       "colors/*.vim",
       true,
-      true
-    )
+      true,
+    ),
   ).map((c) => basename(c, extname(c)));
 
   clog({ colorschemes });
@@ -60,6 +64,14 @@ export async function main(denops: Denops): Promise<void> {
   clog({ colorschemes });
   if (disables.length) {
     colorschemes = without(colorschemes, ...disables);
+  }
+  clog({ colorschemes });
+  if (match) {
+    colorschemes = colorschemes.filter((c) => c.match(match));
+  }
+  clog({ colorschemes });
+  if (notmatch) {
+    colorschemes = colorschemes.filter((c) => !c.match(notmatch));
   }
   clog({ colorschemes });
 
@@ -78,7 +90,7 @@ export async function main(denops: Denops): Promise<void> {
           denops,
           `
           colorscheme ${colorscheme}
-        `
+        `,
         );
         if (background) {
           await op.background.set(denops, background);
@@ -111,7 +123,7 @@ export async function main(denops: Denops): Promise<void> {
     command! ChangeColorscheme call s:${denops.name}_notify('change', [])
     command! EnableRandomColorscheme call s:${denops.name}_notify('enable', [])
     command! DisableRandomColorscheme call s:${denops.name}_notify('disable', [])
-  `
+  `,
   );
 
   if (events.length) {
