@@ -15,6 +15,15 @@ Denops random colorscheme.
 " Change colorscheme.
 :ChangeColorscheme
 
+" Open colorscheme enable / disable setting file.
+:OpenColorschemeSetting
+
+" Reset colorscheme enable / disable setting file.
+:ResetColorschemeSetting
+
+" Disable this colorscheme.
+:DisableThisColorscheme
+
 " Disable random colorscheme.
 :DisableRandomColorscheme
 
@@ -35,6 +44,9 @@ let g:randomcolorscheme_disables = ["evening", "default"]                    " N
 let g:randomcolorscheme_match = "base16"                                     " colorscheme match regexp. default: ""
 let g:randomcolorscheme_notmatch = "light"                                   " colorscheme not match regexp. default: ""
 let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"] " Event to change colorscheme. default: []
+
+let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " enable / disable colorscheme setting.
+                                                                             "   default: $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
 ```
 
 ---
