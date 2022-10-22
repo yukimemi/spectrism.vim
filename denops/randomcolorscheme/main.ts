@@ -87,11 +87,7 @@ export async function main(denops: Denops): Promise<void> {
   );
   events = await vars.g.get(denops, "randomcolorscheme_events", events);
   colorschemePath = normalize(
-    await vars.g.get(
-      denops,
-      "randomcolorscheme_path",
-      colorschemePath,
-    ),
+    await vars.g.get(denops, "randomcolorscheme_path", colorschemePath),
   );
 
   clog({
@@ -117,20 +113,16 @@ export async function main(denops: Denops): Promise<void> {
       true,
       true,
     ),
-  ).map((c) => basename(c, extname(c))).reduce(
-    (ret: Record<string, boolean>, cur: string, _i) => {
+  )
+    .map((c) => basename(c, extname(c)))
+    .reduce((ret: Record<string, boolean>, cur: string, _i) => {
       ret[cur] = beforeColors[cur] ?? true;
       return ret;
-    },
-    colorschemes,
-  );
+    }, colorschemes);
 
   clog({ colorschemes });
   if (enables.length) {
-    colorschemes = mapEntries(
-      colorschemes,
-      ([name, _enable]) => [name, false],
-    );
+    colorschemes = mapEntries(colorschemes, ([name, _enable]) => [name, false]);
     enables.forEach((x) => {
       colorschemes[x] = true;
     });
@@ -143,28 +135,22 @@ export async function main(denops: Denops): Promise<void> {
   }
   clog({ colorschemes });
   if (match) {
-    colorschemes = mapEntries(
-      colorschemes,
-      ([name, _enable]) => {
-        if (name.match(match)) {
-          return [name, true];
-        } else {
-          return [name, false];
-        }
-      },
-    );
+    colorschemes = mapEntries(colorschemes, ([name, _enable]) => {
+      if (name.match(match)) {
+        return [name, true];
+      } else {
+        return [name, false];
+      }
+    });
   }
   clog({ colorschemes });
   if (notmatch) {
-    colorschemes = mapEntries(
-      colorschemes,
-      ([name, enable]) => {
-        if (name.match(notmatch)) {
-          return [name, false];
-        }
-        return [name, enable];
-      },
-    );
+    colorschemes = mapEntries(colorschemes, ([name, enable]) => {
+      if (name.match(notmatch)) {
+        return [name, false];
+      }
+      return [name, enable];
+    });
   }
   clog({ colorschemes });
 
@@ -184,12 +170,7 @@ export async function main(denops: Denops): Promise<void> {
         const colorscheme = enableColors[r];
         clog({ colorscheme });
 
-        await helper.execute(
-          denops,
-          `
-          colorscheme ${colorscheme}
-        `,
-        );
+        await denops.cmd(`colorscheme ${colorscheme}`);
         if (background) {
           await op.background.set(denops, background);
         }
@@ -197,6 +178,7 @@ export async function main(denops: Denops): Promise<void> {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
+        await denops.cmd("redraw!");
       } catch (e) {
         clog(e);
       }

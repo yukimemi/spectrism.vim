@@ -4,9 +4,8 @@
   "deno.lint": true,
   "coc.source.file.trimSameExts": [],
   "prettier.disableLanguages": [
-    "javascript",
-    "javascriptreact",
     "typescript",
-    "typescriptreact"
-  ]
+    "javascript"
+  ],
+  "deno.unstable": true
 }
