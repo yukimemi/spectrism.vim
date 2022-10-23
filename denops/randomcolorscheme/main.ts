@@ -195,6 +195,7 @@ export async function main(denops: Denops): Promise<void> {
       await denops.cmd(`echom "Disable: ${c}"`);
       colorschemes[c] = false;
       await saveColorschemes();
+      await denops.dispatcher.change();
     },
 
     async reset(): Promise<void> {
