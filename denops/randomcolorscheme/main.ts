@@ -189,8 +189,12 @@ export async function main(denops: Denops): Promise<void> {
     },
 
     async disableColorscheme(): Promise<void> {
-      const c = ensureString(await vars.g.get(denops, "colors_name"));
+      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
       clog({ c });
+      if (c === "") {
+        clog(`Can't get g:colors_name... so skip.`);
+        return;
+      }
       await helper.echo(denops, `Disable: ${c}`);
       await denops.cmd(`echom "Disable: ${c}"`);
       colorschemes[c] = false;
