@@ -179,6 +179,11 @@ export async function main(denops: Denops): Promise<void> {
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
         await denops.cmd("redraw!");
+
+        const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+        if (c === "") {
+          await denops.dispatcher.change();
+        }
       } catch (e) {
         clog(e);
       }
