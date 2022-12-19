@@ -241,7 +241,9 @@ export async function main(denops: Denops): Promise<void> {
   if (events.length) {
     await autocmd.group(denops, denops.name, (helper) => {
       helper.remove();
-      helper.define(events, "*", `call s:${denops.name}_notify('change', [])`);
+      helper.define(events, "*", `call s:${denops.name}_notify('change', [])`, {
+        nested: true,
+      });
     });
   }
 
