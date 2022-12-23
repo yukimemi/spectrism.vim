@@ -1,29 +1,29 @@
-import * as autocmd from "https://deno.land/x/denops_std@v3.8.2/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v3.8.2/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v3.8.2/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v3.8.2/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v3.8.2/variable/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v3.12.0/autocmd/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v3.12.0/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v3.12.0/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v3.12.0/option/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v3.12.0/variable/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.5.1/src/mod.deno.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v3.8.2/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v3.12.0/mod.ts";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.159.0/path/mod.ts";
+} from "https://deno.land/std@0.170.0/path/mod.ts";
 import {
   ensureArray,
   ensureObject,
   ensureString,
-} from "https://deno.land/x/unknownutil@v2.0.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
 import {
   parse,
   stringify,
-} from "https://deno.land/std@0.159.0/encoding/toml.ts";
-import { mapEntries } from "https://deno.land/std@0.159.0/collections/map_entries.ts";
-import { filterValues } from "https://deno.land/std@0.159.0/collections/filter_values.ts";
-import { ensureDir } from "https://deno.land/std@0.159.0/fs/mod.ts";
+} from "https://deno.land/std@0.170.0/encoding/toml.ts";
+import { mapEntries } from "https://deno.land/std@0.170.0/collections/map_entries.ts";
+import { filterValues } from "https://deno.land/std@0.170.0/collections/filter_values.ts";
+import { ensureDir } from "https://deno.land/std@0.170.0/fs/mod.ts";
 
 let debug = false;
 let echo = true;
