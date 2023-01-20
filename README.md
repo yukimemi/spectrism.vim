@@ -47,6 +47,10 @@ let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"] " E
 
 let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " enable / disable colorscheme setting.
                                                                              "   default: $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
+
+" Useful mappings
+nnoremap <space>co <cmd>ChangeColorscheme<cr>
+nnoremap <space>cd <cmd>DisableThisColorscheme<cr>
 ```
 
 ---
