@@ -16,14 +16,24 @@ import {
   ensureArray,
   ensureObject,
   ensureString,
+  isBoolean,
 } from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
 import {
   parse,
   stringify,
 } from "https://deno.land/std@0.170.0/encoding/toml.ts";
-import { mapEntries } from "https://deno.land/std@0.170.0/collections/map_entries.ts";
-import { filterValues } from "https://deno.land/std@0.170.0/collections/filter_values.ts";
+import {
+  filterEntries,
+} from "https://deno.land/std@0.175.0/collections/filter_entries.ts";
+import {
+  mapEntries,
+} from "https://deno.land/std@0.175.0/collections/map_entries.ts";
 import { ensureDir } from "https://deno.land/std@0.170.0/fs/mod.ts";
+import { Chance } from "https://cdn.skypack.dev/chance@1.1.9";
+
+const defaultPriority = 100;
+
+const chance = new Chance();
 
 let debug = false;
 let echo = true;
@@ -38,7 +48,7 @@ let enable = true;
 
 let events: autocmd.AutocmdEvent[] = [];
 
-type Colorschemes = Record<string, boolean>;
+type Colorschemes = Record<string, number>;
 
 let colorschemes: Colorschemes = {};
 
@@ -53,7 +63,7 @@ const loadColorschemes = async (): Promise<Colorschemes> => {
   clog(`load: ${colorschemePath}`);
   let colors: Colorschemes = {};
   try {
-    colors = ensureObject<boolean>(
+    colors = ensureObject<number>(
       parse(await Deno.readTextFile(colorschemePath)),
     );
     clog({ colors });
@@ -102,7 +112,16 @@ export async function main(denops: Denops): Promise<void> {
     colorschemePath,
   });
 
-  const beforeColors = await loadColorschemes();
+  let beforeColors = await loadColorschemes();
+
+  // Migration.
+  beforeColors = mapEntries(beforeColors, ([name, priority]) => {
+    if (isBoolean(priority)) {
+      return [name, priority ? defaultPriority : 0];
+    } else {
+      return [name, priority];
+    }
+  });
 
   // Get all colorschemes
   colorschemes = ensureArray<string>(
@@ -115,41 +134,44 @@ export async function main(denops: Denops): Promise<void> {
     ),
   )
     .map((c) => basename(c, extname(c)))
-    .reduce((ret: Record<string, boolean>, cur: string, _i) => {
-      ret[cur] = beforeColors[cur] ?? true;
+    .reduce((ret: Record<string, number>, cur: string, _i) => {
+      ret[cur] = beforeColors[cur] ?? defaultPriority;
       return ret;
     }, colorschemes);
 
   clog({ colorschemes });
   if (enables.length) {
-    colorschemes = mapEntries(colorschemes, ([name, _enable]) => [name, false]);
+    colorschemes = mapEntries(
+      colorschemes,
+      ([name, _priority]) => [name, 0],
+    );
     enables.forEach((x) => {
-      colorschemes[x] = true;
+      colorschemes[x] = defaultPriority;
     });
   }
   clog({ colorschemes });
   if (disables.length) {
     disables.forEach((x) => {
-      colorschemes[x] = false;
+      colorschemes[x] = 0;
     });
   }
   clog({ colorschemes });
   if (match) {
-    colorschemes = mapEntries(colorschemes, ([name, _enable]) => {
+    colorschemes = mapEntries(colorschemes, ([name, priority]) => {
       if (name.match(match)) {
-        return [name, true];
+        return [name, priority > 0 ? priority : defaultPriority];
       } else {
-        return [name, false];
+        return [name, 0];
       }
     });
   }
   clog({ colorschemes });
   if (notmatch) {
-    colorschemes = mapEntries(colorschemes, ([name, enable]) => {
+    colorschemes = mapEntries(colorschemes, ([name, priority]) => {
       if (name.match(notmatch)) {
-        return [name, false];
+        return [name, 0];
       }
-      return [name, enable];
+      return [name, priority > 0 ? priority : defaultPriority];
     });
   }
   clog({ colorschemes });
@@ -163,12 +185,24 @@ export async function main(denops: Denops): Promise<void> {
           clog(`enable: ${enable}`);
           return;
         }
-        const enableColors = Object.keys(
-          filterValues(colorschemes, (v: boolean) => v),
+        const nowColor = ensureString(
+          await vars.g.get(denops, "colors_name", ""),
         );
-        const r = Math.floor(Math.random() * enableColors.length);
-        const colorscheme = enableColors[r];
+        const enableColors = filterEntries(
+          colorschemes,
+          ([_name, priority]) => priority > 0,
+        );
+        const colorscheme = chance.weighted(
+          Object.keys(enableColors),
+          Object.values(enableColors),
+        );
         clog({ colorscheme });
+
+        if (nowColor === colorscheme) {
+          clog(`colorscheme is same ! so retry !`);
+          await denops.dispatcher.change();
+          return;
+        }
 
         await denops.cmd(`colorscheme ${colorscheme}`);
         if (background) {
@@ -195,14 +229,13 @@ export async function main(denops: Denops): Promise<void> {
 
     async disableColorscheme(): Promise<void> {
       const c = ensureString(await vars.g.get(denops, "colors_name", ""));
-      clog({ c });
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
       }
       await helper.echo(denops, `Disable: ${c}`);
       await denops.cmd(`echom "Disable: ${c}"`);
-      colorschemes[c] = false;
+      colorschemes[c] = 0;
       await saveColorschemes();
       await denops.dispatcher.change();
     },
@@ -211,6 +244,37 @@ export async function main(denops: Denops): Promise<void> {
       await helper.echo(denops, `Remove: ${colorschemePath}`);
       await denops.cmd(`echom "Remove: ${colorschemePath}"`);
       await Deno.remove(colorschemePath);
+    },
+
+    async like(...args: unknown[]): Promise<void> {
+      clog({ args });
+      const val = Number(ensureArray<number>(args)[0] ?? 10);
+      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+      if (c === "") {
+        clog(`Can't get g:colors_name... so skip.`);
+        return;
+      }
+      const priority = colorschemes[c] + val;
+      await helper.echo(denops, `Increase ${c}'s priority to ${priority}`);
+      await denops.cmd(`echom "Increase ${c}'s priority to ${priority}"`);
+      colorschemes[c] = priority;
+      await saveColorschemes();
+    },
+
+    async hate(...args: unknown[]): Promise<void> {
+      const val = Number(ensureArray<number>(args)[0] ?? 10);
+      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+      if (c === "") {
+        clog(`Can't get g:colors_name... so skip.`);
+        return;
+      }
+      let priority = colorschemes[c] - val;
+      priority = priority < 0 ? 0 : priority;
+      await helper.echo(denops, `Decrease ${c}'s priority to ${priority}`);
+      await denops.cmd(`echom "Decrease ${c}'s priority to ${priority}"`);
+      colorschemes[c] = priority;
+      await saveColorschemes();
+      await denops.dispatcher.change();
     },
 
     // deno-lint-ignore require-await
@@ -235,6 +299,8 @@ export async function main(denops: Denops): Promise<void> {
     command! OpenColorschemeSetting call s:${denops.name}_notify('open', [])
     command! ResetColorschemeSetting call s:${denops.name}_notify('reset', [])
     command! DisableThisColorscheme call s:${denops.name}_notify('disableColorscheme', [])
+    command! -nargs=? LikeThisColorscheme call s:${denops.name}_notify('like', [<f-args>])
+    command! -nargs=? HateThisColorscheme call s:${denops.name}_notify('hate', [<f-args>])
   `,
   );
 

@@ -21,14 +21,24 @@ Denops random colorscheme.
 " Reset colorscheme enable / disable setting file.
 :ResetColorschemeSetting
 
-" Disable this colorscheme.
-:DisableThisColorscheme
-
 " Disable random colorscheme.
 :DisableRandomColorscheme
 
-" Enable random colorscheme
+" Enable random colorscheme.
 :EnableRandomColorscheme
+
+" Disable this colorscheme. (set priority to 0)
+:DisableThisColorscheme
+
+" Increase priority by 10. (default)
+:LikeThisColorscheme
+" Increase priority by 30.
+:LikeThisColorscheme 30
+
+" Decrease priority by 10. (default)
+:HateThisColorscheme
+" Decrease priority by 30.
+:HateThisColorscheme 30
 ```
 
 ## Sample config.
@@ -51,6 +61,8 @@ let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " e
 " Useful mappings
 nnoremap <space>co <cmd>ChangeColorscheme<cr>
 nnoremap <space>cd <cmd>DisableThisColorscheme<cr>
+nnoremap <space>cl <cmd>LikeThisColorscheme<cr>
+nnoremap <space>ch <cmd>HateThisColorscheme<cr>
 ```
 
 ---
