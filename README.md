@@ -15,10 +15,10 @@ Denops random colorscheme.
 " Change colorscheme.
 :ChangeColorscheme
 
-" Open colorscheme enable / disable setting file.
+" Open colorscheme priority setting file.
 :OpenColorschemeSetting
 
-" Reset colorscheme enable / disable setting file.
+" Reset colorscheme priority setting file. (remove file. create next startup.)
 :ResetColorschemeSetting
 
 " Disable random colorscheme.
