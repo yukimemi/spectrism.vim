@@ -1,17 +1,17 @@
-import * as autocmd from "https://deno.land/x/denops_std@v3.12.0/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v3.12.0/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v3.12.0/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v3.12.0/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v3.12.0/variable/mod.ts";
-import xdg from "https://deno.land/x/xdg@v10.5.1/src/mod.deno.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v3.12.0/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v4.1.0/autocmd/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v4.1.0/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v4.1.0/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v4.1.0/option/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v4.1.0/variable/mod.ts";
+import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v4.1.0/mod.ts";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.170.0/path/mod.ts";
+} from "https://deno.land/std@0.181.0/path/mod.ts";
 import {
   ensureArray,
   ensureObject,
@@ -21,15 +21,15 @@ import {
 import {
   parse,
   stringify,
-} from "https://deno.land/std@0.170.0/encoding/toml.ts";
+} from "https://deno.land/std@0.181.0/encoding/toml.ts";
 import {
   filterEntries,
-} from "https://deno.land/std@0.175.0/collections/filter_entries.ts";
+} from "https://deno.land/std@0.181.0/collections/filter_entries.ts";
 import {
   mapEntries,
-} from "https://deno.land/std@0.175.0/collections/map_entries.ts";
-import { ensureDir } from "https://deno.land/std@0.170.0/fs/mod.ts";
-import { Chance } from "https://cdn.skypack.dev/chance@1.1.9";
+} from "https://deno.land/std@0.181.0/collections/map_entries.ts";
+import { ensureDir } from "https://deno.land/std@0.181.0/fs/mod.ts";
+import { Chance } from "https://cdn.skypack.dev/chance@1.1.11/";
 
 const defaultPriority = 100;
 
@@ -196,7 +196,8 @@ export async function main(denops: Denops): Promise<void> {
           Object.keys(enableColors),
           Object.values(enableColors),
         );
-        clog({ colorscheme });
+        const priority = colorschemes[colorscheme];
+        clog({ colorscheme, priority });
 
         if (nowColor === colorscheme) {
           clog(`colorscheme is same ! so retry !`);
@@ -208,6 +209,7 @@ export async function main(denops: Denops): Promise<void> {
         if (background) {
           await op.background.set(denops, background);
         }
+        await vars.g.set(denops, "randomcolorscheme_priority", priority);
         if (echo) {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
@@ -258,6 +260,7 @@ export async function main(denops: Denops): Promise<void> {
       await helper.echo(denops, `Increase ${c}'s priority to ${priority}`);
       await denops.cmd(`echom "Increase ${c}'s priority to ${priority}"`);
       colorschemes[c] = priority;
+      await vars.g.set(denops, "randomcolorscheme_priority", priority);
       await saveColorschemes();
     },
 
@@ -273,6 +276,7 @@ export async function main(denops: Denops): Promise<void> {
       await helper.echo(denops, `Decrease ${c}'s priority to ${priority}`);
       await denops.cmd(`echom "Decrease ${c}'s priority to ${priority}"`);
       colorschemes[c] = priority;
+      await vars.g.set(denops, "randomcolorscheme_priority", priority);
       await saveColorschemes();
       await denops.dispatcher.change();
     },

@@ -58,6 +58,8 @@ let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"] " E
 let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " enable / disable colorscheme setting.
                                                                              "   default: $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
 
+" You use `g:colors_name` for colorscheme name, and `g:randomcolorscheme_priority` for getting priority number.
+
 " Useful mappings
 nnoremap <space>co <cmd>ChangeColorscheme<cr>
 nnoremap <space>cd <cmd>DisableThisColorscheme<cr>
@@ -70,4 +72,3 @@ nnoremap <space>ch <cmd>HateThisColorscheme<cr>
 This plugin is inspired by random colorscheme ! Thank you !
 
 [Sammyalhashe/random_colorscheme.vim: Open a random colorscheme with every new (neo)vim session.](https://github.com/Sammyalhashe/random_colorscheme.vim)
-
