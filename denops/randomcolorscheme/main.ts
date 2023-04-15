@@ -1,17 +1,17 @@
-import * as autocmd from "https://deno.land/x/denops_std@v4.1.0/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v4.1.0/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v4.1.0/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v4.1.0/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v4.1.0/variable/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v4.1.4/autocmd/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v4.1.4/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v4.1.4/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v4.1.4/option/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v4.1.4/variable/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v4.1.0/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v4.1.4/mod.ts";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.181.0/path/mod.ts";
+} from "https://deno.land/std@0.183.0/path/mod.ts";
 import {
   ensureArray,
   ensureObject,
@@ -21,15 +21,15 @@ import {
 import {
   parse,
   stringify,
-} from "https://deno.land/std@0.181.0/encoding/toml.ts";
+} from "https://deno.land/std@0.183.0/encoding/toml.ts";
 import {
   filterEntries,
-} from "https://deno.land/std@0.181.0/collections/filter_entries.ts";
+} from "https://deno.land/std@0.183.0/collections/filter_entries.ts";
 import {
   mapEntries,
-} from "https://deno.land/std@0.181.0/collections/map_entries.ts";
-import { ensureDir } from "https://deno.land/std@0.181.0/fs/mod.ts";
-import { Chance } from "https://cdn.skypack.dev/chance@1.1.11/";
+} from "https://deno.land/std@0.183.0/collections/map_entries.ts";
+import { ensureDir } from "https://deno.land/std@0.183.0/fs/mod.ts";
+import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
 const defaultPriority = 100;
 

@@ -54,6 +54,7 @@ let g:randomcolorscheme_disables = ["evening", "default"]                    " N
 let g:randomcolorscheme_match = "base16"                                     " colorscheme match regexp. default: ""
 let g:randomcolorscheme_notmatch = "light"                                   " colorscheme not match regexp. default: ""
 let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"] " Event to change colorscheme. default: []
+let g:randomcolorscheme_background = "dark"                                  " `set background` after colorscheme change. default: do nothing
 
 let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " enable / disable colorscheme setting.
                                                                              "   default: $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
