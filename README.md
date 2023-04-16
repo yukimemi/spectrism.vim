@@ -59,6 +59,14 @@ let g:randomcolorscheme_background = "dark"                                  " `
 let g:randomcolorscheme_path = expand("~/.cache/colors.toml")                " enable / disable colorscheme setting.
                                                                              "   default: $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
 
+let g:randomcolorscheme_colors_path = [expand("~/.cache/vim/plugs")]         " colorschme looks from runtimepath and, for Neovim, from stdpath("data").
+                                                                               If it is delayed by plugin manager etc.,
+                                                                               it may not be included in the runtimepath at the time of startup.
+                                                                               If you still want to use randomcolorscheme, add it manually to
+                                                                               `g:randomcolorscheme_colors_path` as a search path.
+                                                                               This path will be searched recursively, and `colors/*.vim` or `colors/*.lua` files
+                                                                               will be registered as colorscheme. default: []
+
 " You use `g:colors_name` for colorscheme name, and `g:randomcolorscheme_priority` for getting priority number.
 
 " Useful mappings

@@ -1,8 +1,11 @@
 import * as autocmd from "https://deno.land/x/denops_std@v4.1.4/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v4.1.4/function/mod.ts";
 import * as helper from "https://deno.land/x/denops_std@v4.1.4/helper/mod.ts";
 import * as op from "https://deno.land/x/denops_std@v4.1.4/option/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v4.1.4/function/mod.ts";
+import * as nvimFn from "https://deno.land/x/denops_std@v4.1.4/function/nvim/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v4.1.4/variable/mod.ts";
+import { delay } from "https://deno.land/std@0.183.0/async/delay.ts";
+import { walk } from "https://deno.land/std@0.183.0/fs/walk.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v4.1.4/mod.ts";
 import {
@@ -22,12 +25,8 @@ import {
   parse,
   stringify,
 } from "https://deno.land/std@0.183.0/encoding/toml.ts";
-import {
-  filterEntries,
-} from "https://deno.land/std@0.183.0/collections/filter_entries.ts";
-import {
-  mapEntries,
-} from "https://deno.land/std@0.183.0/collections/map_entries.ts";
+import { filterEntries } from "https://deno.land/std@0.183.0/collections/filter_entries.ts";
+import { mapEntries } from "https://deno.land/std@0.183.0/collections/map_entries.ts";
 import { ensureDir } from "https://deno.land/std@0.183.0/fs/mod.ts";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
@@ -99,6 +98,11 @@ export async function main(denops: Denops): Promise<void> {
   colorschemePath = normalize(
     await vars.g.get(denops, "randomcolorscheme_path", colorschemePath),
   );
+  const colors_path: string[] = await vars.g.get(
+    denops,
+    "randomcolorscheme_colors_path",
+    [],
+  );
 
   clog({
     debug,
@@ -110,6 +114,7 @@ export async function main(denops: Denops): Promise<void> {
     background,
     events,
     colorschemePath,
+    colors_path,
   });
 
   let beforeColors = await loadColorschemes();
@@ -124,38 +129,51 @@ export async function main(denops: Denops): Promise<void> {
   });
 
   // Get all colorschemes
-  colorschemes = ensureArray<string>(
-    await fn.globpath(
-      denops,
-      await op.runtimepath.get(denops),
-      "colors/*.vim",
-      true,
-      true,
-    ),
-  )
+  const colors = Array.from(
+    new Set((await Promise.all(
+      [
+        ...(await op.runtimepath.get(denops)).split(","),
+        await fn.has(denops, "nvim")
+          ? ensureString(await nvimFn.stdpath(denops, "data"))
+          : "",
+        ...colors_path,
+      ].map(
+        async (c) => {
+          // clog({ c });
+          const colornames = [];
+          if (!(await fn.isdirectory(denops, c))) {
+            clog(`c is not found, skip !`);
+          } else {
+            for await (
+              const entry of walk(c, {
+                includeDirs: false,
+                includeFiles: true,
+                exts: ["vim", "lua"],
+                match: [/[/\\]colors[/\\][^/\\]+$/],
+              })
+            ) {
+              clog(entry.path);
+              colornames.push(entry.path);
+            }
+          }
+          return colornames;
+        },
+      ),
+    )).flat()),
+  ).sort();
+  if (colors == undefined) {
+    await denops.cmd(`echom "Colorscheme not found !"`);
+    return;
+  }
+
+  colorschemes = colors
     .map((c) => basename(c, extname(c)))
     .reduce((ret: Record<string, number>, cur: string, _i) => {
       ret[cur] = beforeColors[cur] ?? defaultPriority;
       return ret;
     }, colorschemes);
+  clog({ colorschemes });
 
-  clog({ colorschemes });
-  if (enables.length) {
-    colorschemes = mapEntries(
-      colorschemes,
-      ([name, _priority]) => [name, 0],
-    );
-    enables.forEach((x) => {
-      colorschemes[x] = defaultPriority;
-    });
-  }
-  clog({ colorschemes });
-  if (disables.length) {
-    disables.forEach((x) => {
-      colorschemes[x] = 0;
-    });
-  }
-  clog({ colorschemes });
   if (match) {
     colorschemes = mapEntries(colorschemes, ([name, priority]) => {
       if (name.match(match)) {
@@ -172,6 +190,20 @@ export async function main(denops: Denops): Promise<void> {
         return [name, 0];
       }
       return [name, priority > 0 ? priority : defaultPriority];
+    });
+  }
+  clog({ colorschemes });
+
+  if (enables.length) {
+    colorschemes = mapEntries(colorschemes, ([name, _priority]) => [name, 0]);
+    enables.forEach((x) => {
+      colorschemes[x] = defaultPriority;
+    });
+  }
+  clog({ colorschemes });
+  if (disables.length) {
+    disables.forEach((x) => {
+      colorschemes[x] = 0;
     });
   }
   clog({ colorschemes });
@@ -200,26 +232,33 @@ export async function main(denops: Denops): Promise<void> {
         clog({ colorscheme, priority });
 
         if (nowColor === colorscheme) {
-          clog(`colorscheme is same ! so retry !`);
+          clog(
+            `colorscheme is same ! so retry ! prev: ${nowColor}, curr: ${colorscheme}`,
+          );
           await denops.dispatcher.change();
           return;
         }
 
-        await denops.cmd(`colorscheme ${colorscheme}`);
+        await vars.g.set(denops, "randomcolorscheme_priority", priority);
+        await denops.cmd(`silent! colorscheme ${colorscheme}`);
         if (background) {
           await op.background.set(denops, background);
         }
-        await vars.g.set(denops, "randomcolorscheme_priority", priority);
+
+        await delay(1000);
+        const afterColor = ensureString(
+          await vars.g.get(denops, "colors_name", ""),
+        );
+        if (afterColor === "") {
+          await denops.dispatcher.change();
+          return;
+        }
+
         if (echo) {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
         await denops.cmd("redraw!");
-
-        const c = ensureString(await vars.g.get(denops, "colors_name", ""));
-        if (c === "") {
-          await denops.dispatcher.change();
-        }
       } catch (e) {
         clog(e);
       }
