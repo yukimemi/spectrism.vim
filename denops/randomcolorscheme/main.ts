@@ -4,7 +4,6 @@ import * as op from "https://deno.land/x/denops_std@v4.1.4/option/mod.ts";
 import * as fn from "https://deno.land/x/denops_std@v4.1.4/function/mod.ts";
 import * as nvimFn from "https://deno.land/x/denops_std@v4.1.4/function/nvim/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v4.1.4/variable/mod.ts";
-import { delay } from "https://deno.land/std@0.183.0/async/delay.ts";
 import { walk } from "https://deno.land/std@0.183.0/fs/walk.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v4.1.4/mod.ts";
@@ -245,11 +244,10 @@ export async function main(denops: Denops): Promise<void> {
           await op.background.set(denops, background);
         }
 
-        await delay(1000);
         const afterColor = ensureString(
           await vars.g.get(denops, "colors_name", ""),
         );
-        if (afterColor === "") {
+        if (!afterColor) {
           await denops.dispatcher.change();
           return;
         }
