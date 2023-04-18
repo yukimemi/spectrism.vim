@@ -70,7 +70,7 @@ let g:randomcolorscheme_colors_path = [expand("~/.cache/vim/plugs")]         " c
 " You use `g:colors_name` for colorscheme name, and `g:randomcolorscheme_priority` for getting priority number.
 
 " Useful mappings
-nnoremap <space>co <cmd>ChangeColorscheme<cr>
+nnoremap <space>cc <cmd>ChangeColorscheme<cr>
 nnoremap <space>cd <cmd>DisableThisColorscheme<cr>
 nnoremap <space>cl <cmd>LikeThisColorscheme<cr>
 nnoremap <space>ch <cmd>HateThisColorscheme<cr>
