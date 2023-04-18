@@ -239,7 +239,15 @@ export async function main(denops: Denops): Promise<void> {
         }
 
         await vars.g.set(denops, "randomcolorscheme_priority", priority);
-        await denops.cmd(`silent! colorscheme ${colorscheme}`);
+        try {
+          await denops.cmd(`colorscheme ${colorscheme}`);
+        } catch (e) {
+          clog(e);
+          colorschemes[colorscheme] = 0;
+          await saveColorschemes();
+          await denops.dispatcher.change();
+          return;
+        }
         if (background) {
           await op.background.set(denops, background);
         }
