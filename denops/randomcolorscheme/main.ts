@@ -20,10 +20,7 @@ import {
   ensureString,
   isBoolean,
 } from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
-import {
-  parse,
-  stringify,
-} from "https://deno.land/std@0.188.0/encoding/toml.ts";
+import { parse, stringify } from "https://deno.land/std@0.188.0/toml/mod.ts";
 import { filterEntries } from "https://deno.land/std@0.188.0/collections/filter_entries.ts";
 import { mapEntries } from "https://deno.land/std@0.188.0/collections/map_entries.ts";
 import { ensureDir } from "https://deno.land/std@0.188.0/fs/mod.ts";
