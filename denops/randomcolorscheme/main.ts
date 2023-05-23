@@ -1,32 +1,32 @@
-import * as autocmd from "https://deno.land/x/denops_std@v4.1.4/autocmd/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v4.1.4/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v4.1.4/option/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v4.1.4/function/mod.ts";
-import * as nvimFn from "https://deno.land/x/denops_std@v4.1.4/function/nvim/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v4.1.4/variable/mod.ts";
-import { walk } from "https://deno.land/std@0.183.0/fs/walk.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v5.0.0/autocmd/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v5.0.0/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v5.0.0/option/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v5.0.0/function/mod.ts";
+import * as nvimFn from "https://deno.land/x/denops_std@v5.0.0/function/nvim/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
+import { walk } from "https://deno.land/std@0.188.0/fs/walk.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v4.1.4/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.183.0/path/mod.ts";
+} from "https://deno.land/std@0.188.0/path/mod.ts";
 import {
   ensureArray,
   ensureObject,
   ensureString,
   isBoolean,
-} from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
 import {
   parse,
   stringify,
-} from "https://deno.land/std@0.183.0/encoding/toml.ts";
-import { filterEntries } from "https://deno.land/std@0.183.0/collections/filter_entries.ts";
-import { mapEntries } from "https://deno.land/std@0.183.0/collections/map_entries.ts";
-import { ensureDir } from "https://deno.land/std@0.183.0/fs/mod.ts";
+} from "https://deno.land/std@0.188.0/encoding/toml.ts";
+import { filterEntries } from "https://deno.land/std@0.188.0/collections/filter_entries.ts";
+import { mapEntries } from "https://deno.land/std@0.188.0/collections/map_entries.ts";
+import { ensureDir } from "https://deno.land/std@0.188.0/fs/mod.ts";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
 const defaultPriority = 100;
