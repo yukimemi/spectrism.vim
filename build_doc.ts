@@ -11,7 +11,7 @@ const pod = await lua.doString(code);
 
 const src = await Deno.readTextFile("./pod/randomcolorscheme.pod");
 
-const doc = "./doc/randomcolorscheme.vim";
+const doc = "./doc/randomcolorscheme.txt";
 await Deno.writeTextFile(doc, await pod.process("vimdoc", src));
 
 const readme = "./README.md";
