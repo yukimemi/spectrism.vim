@@ -2,7 +2,7 @@ import { LuaFactory } from "npm:wasmoon@latest";
 const luaFactory = new LuaFactory();
 const lua = await luaFactory.createEngine();
 const code = (await (await fetch(
-  "https://raw.githubusercontent.com/tani/podium/main/lua/podium.lua",
+  "https://pod.deno.dev/podium.lua",
 )).text()).replace(
   "#!/usr/bin/env lua",
   "",
