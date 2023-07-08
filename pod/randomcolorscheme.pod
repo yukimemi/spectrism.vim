@@ -5,17 +5,17 @@ description: A random colorscheme plugin.
 
 =pod
 
-=head1 Denops randomcolorscheme *randomcolorscheme*
+=head1 dps-randomcolorscheme
 
 Denops random colorscheme.
 
-=head2 Features *randomcolorscheme-features*
+=head2 Features X<randomcolorscheme-features>
 
 This plugin change the colorscheme for Vim / Neovim.
 
-=head2 Installation *randomcolorscheme-installation*
+=head2 Installation X<randomcolorscheme-installation>
 
-If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
+If you use L<folke/lazy.nvim|https://github.com/folke/lazy.nvim>.
 
   {
     "yukimemi/dps-randomcolorscheme",
@@ -25,11 +25,11 @@ If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
     },
   }
 
-If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
+If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
 
   dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
 
-=head2 Requirements *randomcolorscheme-requirements*
+=head2 Requirements X<randomcolorscheme-requirements>
 
 =over
 
@@ -39,114 +39,111 @@ If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
 
 =back
 
-=head2 Usage *randomcolorscheme-usage*
+=head2 Usage X<randomcolorscheme-usage>
 
 No special settings are required.
 By default it changes the colorscheme every 3,600 seconds.
 
-=head2 Commands *randomcolorscheme-commands*
+=head2 Commands X<randomcolorscheme-commands>
 
-*:ChangeColorscheme*
-  Change the colorscheme.
+C<:ChangeColorscheme>                                      X<:ChangeColorscheme>
+Change the colorscheme.
 
-*:OpenColorschemeSetting*
-  Open the randomcolorscheme priority setting.
-  colorschme setting is a toml file.
-  Colorschemes with higher numerical priorities are preferred.
+C<:OpenColorschemeSetting>                            X<:OpenColorschemeSetting>
+Open the randomcolorscheme priority setting.
+colorschme setting is a toml file.
+Colorschemes with higher numerical priorities are preferred.
 
-    colorschme_name = priority
+C<:ResetColorschemeSetting>                          X<:ResetColorschemeSetting>
+Remove the randomcolorscheme setting file.
+The configuration file will be automatically regenerated the next time you start Vim / Neovim.
 
-*:ResetColorschemeSetting*
-  Remove the randomcolorscheme setting file.
-  The configuration file will be automatically regenerated the next time you start Vim / Neovim.
+C<:DisableRandomColorscheme>                        X<:DisableRandomColorscheme>
+Disable randomcolorscheme.
+Stop changing colorschme.
 
-*:DisableRandomColorscheme*
-  Disable randomcolorscheme.
-  Stop changing colorschme.
+C<:EnableRandomColorscheme>                          X<:EnableRandomColorscheme>
+Enable randomcolorscheme.
 
-*:EnableRandomColorscheme*
-  Enable randomcolorscheme.
+C<:DisableThisColorscheme>                            X<:DisableThisColorscheme>
+Disable this colorscheme.
+(Set colorschmeme priority to 0.)
 
-*:DisableThisColorscheme*
-  Disable this colorscheme.
-  (Set colorschmeme priority to 0.)
+C<:LikeThisColorscheme [count]>                          X<:LikeThisColorscheme>
+Increase priority by 10. (default)
+If count is passed, increase priority according to count.
 
-*:LikeThisColorscheme* [count]
-  Increase priority by 10. (default)
-  If count is passed, increase priority according to count.
+C<:HateThisColorscheme [count]>                          X<:HateThisColorscheme>
+Decrease priority by 10. (default)
+If count is passed, decrease priority according to count.
 
-*:HateThisColorscheme* [count]
-  Decrease priority by 10. (default)
-  If count is passed, decrease priority according to count.
-
-=head2 Config *randomcolorscheme-config*
+=head2 Config X<randomcolorscheme-config>
 
 No settings are required. However, the following settings can be made if necessary.
 
-*g:randomcolorscheme_debug*
-  Enable debug messages.
-  default is v:false
+C<g:randomcolorscheme_debug>                        X<g:randomcolorscheme_debug>
+Enable debug messages.
+default is v:false
 
-*g:randomcolorscheme_echo*
-  Whether to echo the modified colorscheme.
-  default is v:true
+C<g:randomcolorscheme_echo>                          X<g:randomcolorscheme_echo>
+Whether to echo the modified colorscheme.
+default is v:true
 
-*g:randomcolorscheme_interval*
-  Interval to change colorscheme.
-  default is 3600 (seconds)
+C<g:randomcolorscheme_interval>                  X<g:randomcolorscheme_interval>
+Interval to change colorscheme.
+default is 3600 (seconds)
 
-*g:randomcolorscheme_enables*
-  A list of colorschemes to be used for selection.
-  If this list is set, only the changing colorschme that includes this list will be used.
-  Not included colorscheme's priority are all set to 0.
-  default is [] (Use all colorscheme)
+C<g:randomcolorscheme_enables>                    X<g:randomcolorscheme_enables>
+A list of colorschemes to be used for selection.
+If this list is set, only the changing colorschme that includes this list will be used.
+Not included colorscheme's priority are all set to 0.
+default is [] (Use all colorscheme)
 
-*g:randomcolorscheme_disables*
-  A list of colorschemes to be not used for selection.
-  If this list is set, only the changing colorschme that not includes this list will be used.
-  Included colorscheme's priority are all set to 0.
-  default is [] (Use all colorscheme)
+C<g:randomcolorscheme_disables>                  X<g:randomcolorscheme_disables>
+A list of colorschemes to be not used for selection.
+If this list is set, only the changing colorschme that not includes this list will be used.
+Included colorscheme's priority are all set to 0.
+default is [] (Use all colorscheme)
 
-*g:randomcolorscheme_match*
-  A match pattern to be used for selection. (regexp)
-  If this pattern is set, only the changing colorschme that match this pattern will be used.
-  default is "" (Use all colorscheme)
+C<g:randomcolorscheme_match>                        X<g:randomcolorscheme_match>
+A match pattern to be used for selection. (regexp)
+If this pattern is set, only the changing colorschme that match this pattern will be used.
+default is "" (Use all colorscheme)
 
-*g:randomcolorscheme_notmatch*
-  A match pattern to be not used for selection. (regexp)
-  If this pattern is set, only the changing colorschme that not match this pattern will be used.
-  default is "" (Use all colorscheme)
+C<g:randomcolorscheme_notmatch>                  X<g:randomcolorscheme_notmatch>
+A match pattern to be not used for selection. (regexp)
+If this pattern is set, only the changing colorschme that not match this pattern will be used.
+default is "" (Use all colorscheme)
 
-*g:randomcolorscheme_events*
-  A list of events to be used for selection.
-  If this list is set, the colorscheme will be changed if the target event fires.
-  default is []
+C<g:randomcolorscheme_events>                      X<g:randomcolorscheme_events>
+A list of events to be used for selection.
+If this list is set, the colorscheme will be changed if the target event fires.
+default is []
 
-*g:randomcolorscheme_background*
-  "dark" or "light"
-  If this option is set, the background option set after the colorscheme change is set
-  default is ""
+C<g:randomcolorscheme_background>              X<g:randomcolorscheme_background>
+"dark" or "light"
+If this option is set, the background option set after the colorscheme change is set
+default is ""
 
-*g:randomcolorscheme_path*
-  The path to the colorscheme config file.
-  default is $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
+C<g:randomcolorscheme_path>                          X<g:randomcolorscheme_path>
+The path to the colorscheme config file.
+default is $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
 
-*g:randomcolorscheme_colors_path*
-  colorschme looks from runtimepath and, for Neovim, from stdpath("data").
-  If it is delayed by plugin manager etc.,
-  it may not be included in the runtimepath at the time of startup.
-  If you still want to use randomcolorscheme, add it manually to
-  `g:randomcolorscheme_colors_path` as a search path.
-  This path will be searched recursively, and `colors/*.vim` or `colors/*.lua` files
-  will be registered as colorscheme.
-  default is []
+C<g:randomcolorscheme_colors_path>            X<g:randomcolorscheme_colors_path>
+colorschme looks from runtimepath and, for Neovim, from stdpath("data").
+If it is delayed by plugin manager etc.,
+it may not be included in the runtimepath at the time of startup.
+If you still want to use randomcolorscheme, add it manually to
+`g:randomcolorscheme_colors_path` as a search path.
+This path will be searched recursively, and `colors/*.vim` or `colors/*.lua` files
+will be registered as colorscheme.
+default is []
 
-*g:randomcolorscheme_priority*
-  The priority of the colorscheme. (readonly)
-  You can use this value for statusline.
+C<g:randomcolorscheme_priority>                  X<g:randomcolorscheme_priority>
+The priority of the colorscheme. (readonly)
+You can use this value for statusline.
 
-=head2 Example *randomcolorscheme-example*
-
+=head2 Example X<randomcolorscheme-example>
 
   let g:randomcolorscheme_debug = v:false
   let g:randomcolorscheme_echo = v:false
@@ -166,7 +163,7 @@ No settings are required. However, the following settings can be made if necessa
   nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
   nnoremap <space>rh <cmd>HateThisColorscheme<cr>
 
-=head2 License *randomcolorscheme-license*
+=head2 License X<randomcolorscheme-license>
 
 Licensed under MIT License.
 
