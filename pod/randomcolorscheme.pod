@@ -9,11 +9,11 @@ description: A random colorscheme plugin.
 
 Denops random colorscheme.
 
-=head2 Features X<randomcolorscheme-features>
+=head1 Features X<randomcolorscheme-features>
 
 This plugin change the colorscheme for Vim / Neovim.
 
-=head2 Installation X<randomcolorscheme-installation>
+=head1 Installation X<randomcolorscheme-installation>
 
 If you use L<folke/lazy.nvim|https://github.com/folke/lazy.nvim>.
 
@@ -29,7 +29,7 @@ If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
 
   dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
 
-=head2 Requirements X<randomcolorscheme-requirements>
+=head1 Requirements X<randomcolorscheme-requirements>
 
 =over
 
@@ -39,12 +39,12 @@ If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
 
 =back
 
-=head2 Usage X<randomcolorscheme-usage>
+=head1 Usage X<randomcolorscheme-usage>
 
 No special settings are required.
 By default it changes the colorscheme every 3,600 seconds.
 
-=head2 Commands X<randomcolorscheme-commands>
+=head1 Commands X<randomcolorscheme-commands>
 
 C<:ChangeColorscheme>                                      X<:ChangeColorscheme>
 Change the colorscheme.
@@ -77,7 +77,7 @@ C<:HateThisColorscheme [count]>                          X<:HateThisColorscheme>
 Decrease priority by 10. (default)
 If count is passed, decrease priority according to count.
 
-=head2 Config X<randomcolorscheme-config>
+=head1 Config X<randomcolorscheme-config>
 
 No settings are required. However, the following settings can be made if necessary.
 
@@ -143,7 +143,7 @@ C<g:randomcolorscheme_priority>                  X<g:randomcolorscheme_priority>
 The priority of the colorscheme. (readonly)
 You can use this value for statusline.
 
-=head2 Example X<randomcolorscheme-example>
+=head1 Example X<randomcolorscheme-example>
 
   let g:randomcolorscheme_debug = v:false
   let g:randomcolorscheme_echo = v:false
@@ -163,7 +163,7 @@ You can use this value for statusline.
   nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
   nnoremap <space>rh <cmd>HateThisColorscheme<cr>
 
-=head2 License X<randomcolorscheme-license>
+=head1 License X<randomcolorscheme-license>
 
 Licensed under MIT License.
 

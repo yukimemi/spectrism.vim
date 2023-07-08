@@ -2,11 +2,11 @@
 
 Denops random colorscheme.
 
-## Features 
+# Features 
 
 This plugin change the colorscheme for Vim / Neovim.
 
-## Installation 
+# Installation 
 
 If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
 
@@ -26,17 +26,17 @@ If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
   dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
 ```
 
-## Requirements 
+# Requirements 
 
     - [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
     - [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
 
-## Usage 
+# Usage 
 
 No special settings are required.
 By default it changes the colorscheme every 3,600 seconds.
 
-## Commands 
+# Commands 
 
 `:ChangeColorscheme`                                      
 Change the colorscheme.
@@ -69,7 +69,7 @@ If count is passed, increase priority according to count.
 Decrease priority by 10. (default)
 If count is passed, decrease priority according to count.
 
-## Config 
+# Config 
 
 No settings are required. However, the following settings can be made if necessary.
 
@@ -135,7 +135,7 @@ default is []
 The priority of the colorscheme. (readonly)
 You can use this value for statusline.
 
-## Example 
+# Example 
 
 ```
   let g:randomcolorscheme_debug = v:false
@@ -157,7 +157,7 @@ You can use this value for statusline.
   nnoremap <space>rh <cmd>HateThisColorscheme<cr>
 ```
 
-## License 
+# License 
 
 Licensed under MIT License.
 
