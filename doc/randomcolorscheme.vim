@@ -1,16 +1,18 @@
-# Denops randomcolorscheme *randomcolorscheme*
+*randomcolorscheme.txt*                          A random colorscheme plugin.
+=============================================================================
+Denops randomcolorscheme *randomcolorscheme*~
 
 Denops random colorscheme.
 
-## Features *randomcolorscheme-features*
+Features *randomcolorscheme-features*~
 
 This plugin change the colorscheme for Vim / Neovim.
 
-## Installation *randomcolorscheme-installation*
+Installation *randomcolorscheme-installation*~
 
 If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
 
-```
+>
   {
     "yukimemi/dps-randomcolorscheme",
     lazy = false,
@@ -18,25 +20,25 @@ If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
       "vim-denops/denops.vim",
     },
   }
-```
+<
 
 If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
 
-```
+>
   dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
-```
+<
 
-## Requirements *randomcolorscheme-requirements*
+Requirements *randomcolorscheme-requirements*~
 
     - [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
     - [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
 
-## Usage *randomcolorscheme-usage*
+Usage *randomcolorscheme-usage*~
 
 No special settings are required.
 By default it changes the colorscheme every 3,600 seconds.
 
-## Commands *randomcolorscheme-commands*
+Commands *randomcolorscheme-commands*~
 
 *:ChangeColorscheme*
   Change the colorscheme.
@@ -46,9 +48,9 @@ By default it changes the colorscheme every 3,600 seconds.
   colorschme setting is a toml file.
   Colorschemes with higher numerical priorities are preferred.
 
-```
+>
     colorschme_name = priority
-```
+<
 
 *:ResetColorschemeSetting*
   Remove the randomcolorscheme setting file.
@@ -73,7 +75,7 @@ By default it changes the colorscheme every 3,600 seconds.
   Decrease priority by 10. (default)
   If count is passed, decrease priority according to count.
 
-## Config *randomcolorscheme-config*
+Config *randomcolorscheme-config*~
 
 No settings are required. However, the following settings can be made if necessary.
 
@@ -139,9 +141,9 @@ No settings are required. However, the following settings can be made if necessa
   The priority of the colorscheme. (readonly)
   You can use this value for statusline.
 
-## Example *randomcolorscheme-example*
+Example *randomcolorscheme-example*~
 
-```
+>
   let g:randomcolorscheme_debug = v:false
   let g:randomcolorscheme_echo = v:false
   let g:randomcolorscheme_interval = 60
@@ -159,11 +161,13 @@ No settings are required. However, the following settings can be made if necessa
   nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
   nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
   nnoremap <space>rh <cmd>HateThisColorscheme<cr>
-```
+<
 
-## License *randomcolorscheme-license*
+License *randomcolorscheme-license*~
 
 Licensed under MIT License.
 
 Copyright (c) 2023 yukimemi
 
+
+vim:tw=78:ts=8:noet:ft=help:norl:
