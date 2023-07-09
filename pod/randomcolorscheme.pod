@@ -31,13 +31,9 @@ If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
 
 =head1 Requirements X<randomcolorscheme-requirements>
 
-=over
-
 =item [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
 
 =item [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
-
-=back
 
 =head1 Usage X<randomcolorscheme-usage>
 

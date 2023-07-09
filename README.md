@@ -28,9 +28,8 @@ If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
 
 # Requirements 
 
-    - [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
-    - [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
-
+- [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
+- [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
 # Usage 
 
 No special settings are required.
