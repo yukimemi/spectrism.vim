@@ -1,12 +1,13 @@
 import * as autocmd from "https://deno.land/x/denops_std@v5.0.0/autocmd/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v5.0.0/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v5.0.0/option/mod.ts";
 import * as fn from "https://deno.land/x/denops_std@v5.0.0/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v5.0.0/helper/mod.ts";
 import * as nvimFn from "https://deno.land/x/denops_std@v5.0.0/function/nvim/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v5.0.0/option/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
-import { walk } from "https://deno.land/std@0.188.0/fs/walk.ts";
-import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
+import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
+import { delay } from "https://deno.land/std@0.193.0/async/delay.ts";
+import { walk } from "https://deno.land/std@0.188.0/fs/walk.ts";
 import {
   basename,
   dirname,
@@ -32,7 +33,9 @@ const chance = new Chance();
 
 let debug = false;
 let echo = true;
+let retry = true;
 let interval = 3600;
+let checkWait = 3000;
 let enables: string[] = [];
 let disables: string[] = [];
 let match = "";
@@ -80,7 +83,9 @@ export async function main(denops: Denops): Promise<void> {
   debug = await vars.g.get(denops, "randomcolorscheme_debug", debug);
   // Merge user config.
   echo = await vars.g.get(denops, "randomcolorscheme_echo", echo);
+  retry = await vars.g.get(denops, "randomcolorscheme_retry", retry);
   interval = await vars.g.get(denops, "randomcolorscheme_interval", interval);
+  checkWait = await vars.g.get(denops, "randomcolorscheme_checkwait", checkWait);
   enables = await vars.g.get(denops, "randomcolorscheme_enables", enables);
   disables = await vars.g.get(denops, "randomcolorscheme_disables", disables);
   match = await vars.g.get(denops, "randomcolorscheme_match", match);
@@ -103,6 +108,9 @@ export async function main(denops: Denops): Promise<void> {
   clog({
     debug,
     echo,
+    retry,
+    interval,
+    checkWait,
     enables,
     disables,
     match,
@@ -129,9 +137,7 @@ export async function main(denops: Denops): Promise<void> {
     new Set((await Promise.all(
       [
         ...(await op.runtimepath.get(denops)).split(","),
-        await fn.has(denops, "nvim")
-          ? ensureString(await nvimFn.stdpath(denops, "data"))
-          : "",
+        await fn.has(denops, "nvim") ? ensureString(await nvimFn.stdpath(denops, "data")) : "",
         ...colors_path,
       ].map(
         async (c) => {
@@ -227,7 +233,7 @@ export async function main(denops: Denops): Promise<void> {
         const priority = colorschemes[colorscheme];
         clog({ colorscheme, priority });
 
-        if (nowColor === colorscheme) {
+        if (nowColor === colorscheme && retry) {
           clog(
             `colorscheme is same ! so retry ! prev: ${nowColor}, curr: ${colorscheme}`,
           );
@@ -249,6 +255,7 @@ export async function main(denops: Denops): Promise<void> {
           await op.background.set(denops, background);
         }
 
+        await delay(checkWait);
         const afterColor = ensureString(
           await vars.g.get(denops, "colors_name", ""),
         );
@@ -261,7 +268,7 @@ export async function main(denops: Denops): Promise<void> {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
         }
-        await denops.cmd("redraw!");
+        // await denops.cmd("redraw!");
       } catch (e) {
         clog(e);
       }

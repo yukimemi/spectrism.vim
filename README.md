@@ -84,6 +84,15 @@ default is v:true
 Interval to change colorscheme.
 default is 3600 (seconds)
 
+`g:randomcolorscheme_retry`                        
+Whether to retry change colorscheme when after changed colorschme is same before.
+default is v:true
+
+`g:randomcolorscheme_checkwait`                
+Time to wait before checking `g:colors_name` after changing colorschme.
+`g:colors_name` may not be included immediately after changing colorschme.
+default is 3000 (milliseconds)
+
 `g:randomcolorscheme_enables`                    
 A list of colorschemes to be used for selection.
 If this list is set, only the changing colorschme that includes this list will be used.
