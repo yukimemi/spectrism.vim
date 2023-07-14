@@ -85,6 +85,10 @@ C<g:randomcolorscheme_echo>                          X<g:randomcolorscheme_echo>
 Whether to echo the modified colorscheme.
 default is v:true
 
+C<g:randomcolorscheme_notify>                      X<g:randomcolorscheme_notify>
+Whether to `vim.notify` the modified colorscheme. (Neovim only)
+default is v:false
+
 C<g:randomcolorscheme_interval>                  X<g:randomcolorscheme_interval>
 Interval to change colorscheme.
 default is 3600 (seconds)
@@ -152,6 +156,7 @@ You can use this value for statusline.
 
   let g:randomcolorscheme_debug = v:false
   let g:randomcolorscheme_echo = v:false
+  let g:randomcolorscheme_notify = v:true
   let g:randomcolorscheme_interval = 60
   let g:randomcolorscheme_enables = ["morning", "ron"]
   let g:randomcolorscheme_disables = ["evening", "default"]

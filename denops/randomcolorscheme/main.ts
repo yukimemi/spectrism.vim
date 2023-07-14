@@ -1,30 +1,25 @@
-import * as autocmd from "https://deno.land/x/denops_std@v5.0.0/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v5.0.0/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v5.0.0/helper/mod.ts";
-import * as nvimFn from "https://deno.land/x/denops_std@v5.0.0/function/nvim/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v5.0.0/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v5.0.1/autocmd/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v5.0.1/helper/mod.ts";
+import * as nvimFn from "https://deno.land/x/denops_std@v5.0.1/function/nvim/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v5.0.1/option/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v5.0.1/variable/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { delay } from "https://deno.land/std@0.193.0/async/delay.ts";
-import { walk } from "https://deno.land/std@0.188.0/fs/walk.ts";
+import { delay } from "https://deno.land/std@0.194.0/async/delay.ts";
+import { walk } from "https://deno.land/std@0.194.0/fs/walk.ts";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.188.0/path/mod.ts";
-import {
-  ensureArray,
-  ensureObject,
-  ensureString,
-  isBoolean,
-} from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
-import { parse, stringify } from "https://deno.land/std@0.188.0/toml/mod.ts";
-import { filterEntries } from "https://deno.land/std@0.188.0/collections/filter_entries.ts";
-import { mapEntries } from "https://deno.land/std@0.188.0/collections/map_entries.ts";
-import { ensureDir } from "https://deno.land/std@0.188.0/fs/mod.ts";
+} from "https://deno.land/std@0.194.0/path/mod.ts";
+import { ensure, is } from "https://deno.land/x/unknownutil@v3.2.0/mod.ts";
+import { parse, stringify } from "https://deno.land/std@0.194.0/toml/mod.ts";
+import { filterEntries } from "https://deno.land/std@0.194.0/collections/filter_entries.ts";
+import { mapEntries } from "https://deno.land/std@0.194.0/collections/map_entries.ts";
+import { ensureDir } from "https://deno.land/std@0.194.0/fs/mod.ts";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
 const defaultPriority = 100;
@@ -33,6 +28,7 @@ const chance = new Chance();
 
 let debug = false;
 let echo = true;
+let notify = false;
 let retry = true;
 let interval = 3600;
 let checkWait = 3000;
@@ -61,8 +57,9 @@ const loadColorschemes = async (): Promise<Colorschemes> => {
   clog(`load: ${colorschemePath}`);
   let colors: Colorschemes = {};
   try {
-    colors = ensureObject<number>(
+    colors = ensure(
       parse(await Deno.readTextFile(colorschemePath)),
+      is.RecordOf(is.Number),
     );
     clog({ colors });
   } catch {
@@ -83,6 +80,7 @@ export async function main(denops: Denops): Promise<void> {
   debug = await vars.g.get(denops, "randomcolorscheme_debug", debug);
   // Merge user config.
   echo = await vars.g.get(denops, "randomcolorscheme_echo", echo);
+  notify = await vars.g.get(denops, "randomcolorscheme_notify", notify);
   retry = await vars.g.get(denops, "randomcolorscheme_retry", retry);
   interval = await vars.g.get(denops, "randomcolorscheme_interval", interval);
   checkWait = await vars.g.get(denops, "randomcolorscheme_checkwait", checkWait);
@@ -108,6 +106,7 @@ export async function main(denops: Denops): Promise<void> {
   clog({
     debug,
     echo,
+    notify,
     retry,
     interval,
     checkWait,
@@ -125,7 +124,7 @@ export async function main(denops: Denops): Promise<void> {
 
   // Migration.
   beforeColors = mapEntries(beforeColors, ([name, priority]) => {
-    if (isBoolean(priority)) {
+    if (is.Boolean(priority)) {
       return [name, priority ? defaultPriority : 0];
     } else {
       return [name, priority];
@@ -137,7 +136,7 @@ export async function main(denops: Denops): Promise<void> {
     new Set((await Promise.all(
       [
         ...(await op.runtimepath.get(denops)).split(","),
-        await fn.has(denops, "nvim") ? ensureString(await nvimFn.stdpath(denops, "data")) : "",
+        await fn.has(denops, "nvim") ? ensure(await nvimFn.stdpath(denops, "data"), is.String) : "",
         ...colors_path,
       ].map(
         async (c) => {
@@ -219,8 +218,9 @@ export async function main(denops: Denops): Promise<void> {
           clog(`enable: ${enable}`);
           return;
         }
-        const nowColor = ensureString(
+        const nowColor = ensure(
           await vars.g.get(denops, "colors_name", ""),
+          is.String,
         );
         const enableColors = filterEntries(
           colorschemes,
@@ -256,8 +256,9 @@ export async function main(denops: Denops): Promise<void> {
         }
 
         await delay(checkWait);
-        const afterColor = ensureString(
+        const afterColor = ensure(
           await vars.g.get(denops, "colors_name", ""),
+          is.String,
         );
         if (!afterColor) {
           await denops.dispatcher.change();
@@ -267,6 +268,12 @@ export async function main(denops: Denops): Promise<void> {
         if (echo) {
           await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
           await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
+        }
+        if (notify && denops.meta.host === "nvim") {
+          await helper.execute(
+            denops,
+            `lua vim.notify([[Change colorscheme: ${colorscheme}]], vim.log.levels.INFO)`,
+          );
         }
         // await denops.cmd("redraw!");
       } catch (e) {
@@ -279,7 +286,7 @@ export async function main(denops: Denops): Promise<void> {
     },
 
     async disableColorscheme(): Promise<void> {
-      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
@@ -299,8 +306,8 @@ export async function main(denops: Denops): Promise<void> {
 
     async like(...args: unknown[]): Promise<void> {
       clog({ args });
-      const val = Number(ensureArray<number>(args)[0] ?? 10);
-      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+      const val = Number(ensure(args, is.Array)[0] ?? 10);
+      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
@@ -314,8 +321,8 @@ export async function main(denops: Denops): Promise<void> {
     },
 
     async hate(...args: unknown[]): Promise<void> {
-      const val = Number(ensureArray<number>(args)[0] ?? 10);
-      const c = ensureString(await vars.g.get(denops, "colors_name", ""));
+      const val = Number(ensure(args, is.Array)[0] ?? 10);
+      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
