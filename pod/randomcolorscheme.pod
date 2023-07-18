@@ -17,6 +17,8 @@ This plugin change the colorscheme for Vim / Neovim.
 
 If you use L<folke/lazy.nvim|https://github.com/folke/lazy.nvim>.
 
+=begin lua
+
   {
     "yukimemi/dps-randomcolorscheme",
     lazy = false,
@@ -25,9 +27,15 @@ If you use L<folke/lazy.nvim|https://github.com/folke/lazy.nvim>.
     },
   }
 
+=end lua
+
 If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
 
+=begin typescript
+
   dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
+
+=end typescript
 
 =head1 Requirements X<randomcolorscheme-requirements>
 
@@ -154,6 +162,8 @@ You can use this value for statusline.
 
 =head1 Example X<randomcolorscheme-example>
 
+=begin vim
+
   let g:randomcolorscheme_debug = v:false
   let g:randomcolorscheme_echo = v:false
   let g:randomcolorscheme_notify = v:true
@@ -172,6 +182,8 @@ You can use this value for statusline.
   nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
   nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
   nnoremap <space>rh <cmd>HateThisColorscheme<cr>
+
+=end vim
 
 =head1 License X<randomcolorscheme-license>
 

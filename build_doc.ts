@@ -7,12 +7,25 @@ const code = (await (await fetch(
   "#!/usr/bin/env lua",
   "",
 );
+
+const langs = ["typescript", "vim", "lua"];
+
 const pod = await lua.doString(code);
 
 const src = await Deno.readTextFile("./pod/randomcolorscheme.pod");
 
 const doc = "./doc/randomcolorscheme.txt";
+for (const lang of langs) {
+  pod.PodiumBackend.registerSimpleDataParagraph("vimdoc", lang, (arg: string) => {
+    return ">\n" + arg + "<\n\n";
+  });
+}
 await Deno.writeTextFile(doc, await pod.process("vimdoc", src));
 
 const readme = "./README.md";
+for (const lang of langs) {
+  pod.PodiumBackend.registerSimpleDataParagraph("markdown", lang, (arg: string) => {
+    return "```" + lang + "\n" + arg + "```\n\n";
+  });
+}
 await Deno.writeTextFile(readme, await pod.process("markdown", src));
