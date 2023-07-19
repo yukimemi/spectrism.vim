@@ -1,31 +1,15 @@
-import { LuaFactory } from "npm:wasmoon@latest";
-const luaFactory = new LuaFactory();
-const lua = await luaFactory.createEngine();
-const code = (await (await fetch(
-  "https://pod.deno.dev/podium.lua",
-)).text()).replace(
-  "#!/usr/bin/env lua",
-  "",
-);
+import { pod2markdown, pod2vimdoc } from "https://pax.deno.dev/yukimemi/deno-pod@0.0.2/mod.ts";
+import { basename } from "https://deno.land/std@0.194.0/path/mod.ts";
 
-const langs = ["typescript", "vim", "lua"];
-
-const pod = await lua.doString(code);
-
-const src = await Deno.readTextFile("./pod/randomcolorscheme.pod");
-
-const doc = "./doc/randomcolorscheme.txt";
-for (const lang of langs) {
-  pod.PodiumBackend.registerSimpleDataParagraph("vimdoc", lang, (arg: string) => {
-    return ">\n" + arg + "<\n\n";
-  });
+let name = "";
+for await (const p of Deno.readDir("./pod")) {
+  name = basename(p.name, ".pod");
+  break;
 }
-await Deno.writeTextFile(doc, await pod.process("vimdoc", src));
 
-const readme = "./README.md";
-for (const lang of langs) {
-  pod.PodiumBackend.registerSimpleDataParagraph("markdown", lang, (arg: string) => {
-    return "```" + lang + "\n" + arg + "```\n\n";
-  });
-}
-await Deno.writeTextFile(readme, await pod.process("markdown", src));
+const pod = `./pod/${name}.pod`;
+const vimdoc = `./doc/${name}.txt`;
+const markdown = "./README.md";
+
+await pod2vimdoc(pod, vimdoc);
+await pod2markdown(pod, markdown);
