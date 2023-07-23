@@ -11,23 +11,19 @@ This plugin change the colorscheme for Vim / Neovim.
 If you use [folke/lazy.nvim](https://github.com/folke/lazy.nvim).
 
 ```lua
-
-  {
-    "yukimemi/dps-randomcolorscheme",
-    lazy = false,
-    dependencies = {
-      "vim-denops/denops.vim",
-    },
-  }
-
+{
+  "yukimemi/dps-randomcolorscheme",
+  lazy = false,
+  dependencies = {
+    "vim-denops/denops.vim",
+  },
+}
 ```
 
 If you use [yukimemi/dvpm](https://github.com/yukimemi/dvpm).
 
 ```typescript
-
-  dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
-
+dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
 ```
 
 # Requirements 
@@ -154,26 +150,24 @@ You can use this value for statusline.
 # Example 
 
 ```vim
+let g:randomcolorscheme_debug = v:false
+let g:randomcolorscheme_echo = v:false
+let g:randomcolorscheme_notify = v:true
+let g:randomcolorscheme_interval = 60
+let g:randomcolorscheme_enables = ["morning", "ron"]
+let g:randomcolorscheme_disables = ["evening", "default"]
+let g:randomcolorscheme_match = "base16"
+let g:randomcolorscheme_notmatch = "light"
+let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"]
+let g:randomcolorscheme_background = "dark"
+let g:randomcolorscheme_path = expand("~/.cache/colors.toml")
+let g:randomcolorscheme_colors_path = [expand("~/.cache/vim/plugs")]
 
-  let g:randomcolorscheme_debug = v:false
-  let g:randomcolorscheme_echo = v:false
-  let g:randomcolorscheme_notify = v:true
-  let g:randomcolorscheme_interval = 60
-  let g:randomcolorscheme_enables = ["morning", "ron"]
-  let g:randomcolorscheme_disables = ["evening", "default"]
-  let g:randomcolorscheme_match = "base16"
-  let g:randomcolorscheme_notmatch = "light"
-  let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"]
-  let g:randomcolorscheme_background = "dark"
-  let g:randomcolorscheme_path = expand("~/.cache/colors.toml")
-  let g:randomcolorscheme_colors_path = [expand("~/.cache/vim/plugs")]
-
-  " Useful mappings
-  nnoremap <space>rc <cmd>ChangeColorscheme<cr>
-  nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
-  nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
-  nnoremap <space>rh <cmd>HateThisColorscheme<cr>
-
+" Useful mappings
+nnoremap <space>rc <cmd>ChangeColorscheme<cr>
+nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
+nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
+nnoremap <space>rh <cmd>HateThisColorscheme<cr>
 ```
 
 # License 
