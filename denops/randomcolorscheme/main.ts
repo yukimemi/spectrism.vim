@@ -37,6 +37,7 @@ let disables: string[] = [];
 let match = "";
 let notmatch = "";
 let background = "";
+let changeSize = 10;
 let colorschemePath = join(xdg.config(), "randomcolorscheme/colorschemes.toml");
 let enable = true;
 
@@ -75,6 +76,18 @@ const saveColorschemes = async () => {
   await Deno.writeTextFile(colorschemePath, tomlStr);
 };
 
+const message = async (denops: Denops, msg: string) => {
+  if (notify && denops.meta.host === "nvim") {
+    await helper.execute(
+      denops,
+      `lua vim.notify([[${msg}]], vim.log.levels.INFO)`,
+    );
+  }
+  if (echo) {
+    await helper.echo(denops, msg);
+  }
+};
+
 export async function main(denops: Denops): Promise<void> {
   // debug.
   debug = await vars.g.get(denops, "randomcolorscheme_debug", debug);
@@ -88,6 +101,7 @@ export async function main(denops: Denops): Promise<void> {
   disables = await vars.g.get(denops, "randomcolorscheme_disables", disables);
   match = await vars.g.get(denops, "randomcolorscheme_match", match);
   notmatch = await vars.g.get(denops, "randomcolorscheme_notmatch", notmatch);
+  changeSize = await vars.g.get(denops, "randomcolorscheme_changesize", changeSize);
   background = await vars.g.get(
     denops,
     "randomcolorscheme_background",
@@ -115,6 +129,7 @@ export async function main(denops: Denops): Promise<void> {
     match,
     notmatch,
     background,
+    changeSize,
     events,
     colorschemePath,
     colors_path,
@@ -265,16 +280,8 @@ export async function main(denops: Denops): Promise<void> {
           return;
         }
 
-        if (echo) {
-          await helper.echo(denops, `Change colorscheme: ${colorscheme}`);
-          await denops.cmd(`echom "Change colorscheme: ${colorscheme}"`);
-        }
-        if (notify && denops.meta.host === "nvim") {
-          await helper.execute(
-            denops,
-            `lua vim.notify([[Change colorscheme: ${colorscheme}]], vim.log.levels.INFO)`,
-          );
-        }
+        await message(denops, `Change colorscheme: ${colorscheme}`);
+
         // await denops.cmd("redraw!");
       } catch (e) {
         clog(e);
@@ -291,37 +298,34 @@ export async function main(denops: Denops): Promise<void> {
         clog(`Can't get g:colors_name... so skip.`);
         return;
       }
-      await helper.echo(denops, `Disable: ${c}`);
-      await denops.cmd(`echom "Disable: ${c}"`);
+      await message(denops, `Disable: ${c}`);
       colorschemes[c] = 0;
       await saveColorschemes();
       await denops.dispatcher.change();
     },
 
     async reset(): Promise<void> {
-      await helper.echo(denops, `Remove: ${colorschemePath}`);
-      await denops.cmd(`echom "Remove: ${colorschemePath}"`);
+      await message(denops, `Remove: ${colorschemePath}`);
       await Deno.remove(colorschemePath);
     },
 
     async like(...args: unknown[]): Promise<void> {
       clog({ args });
-      const val = Number(ensure(args, is.Array)[0] ?? 10);
+      const val = Number(ensure(args, is.Array)[0] ?? changeSize);
       const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
       }
       const priority = colorschemes[c] + val;
-      await helper.echo(denops, `Increase ${c}'s priority to ${priority}`);
-      await denops.cmd(`echom "Increase ${c}'s priority to ${priority}"`);
+      await message(denops, `Increase ${c}'s priority to ${priority}`);
       colorschemes[c] = priority;
       await vars.g.set(denops, "randomcolorscheme_priority", priority);
       await saveColorschemes();
     },
 
     async hate(...args: unknown[]): Promise<void> {
-      const val = Number(ensure(args, is.Array)[0] ?? 10);
+      const val = Number(ensure(args, is.Array)[0] ?? changeSize);
       const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
@@ -329,8 +333,7 @@ export async function main(denops: Denops): Promise<void> {
       }
       let priority = colorschemes[c] - val;
       priority = priority < 0 ? 0 : priority;
-      await helper.echo(denops, `Decrease ${c}'s priority to ${priority}`);
-      await denops.cmd(`echom "Decrease ${c}'s priority to ${priority}"`);
+      await message(denops, `Decrease ${c}'s priority to ${priority}`);
       colorschemes[c] = priority;
       await vars.g.set(denops, "randomcolorscheme_priority", priority);
       await saveColorschemes();

@@ -73,13 +73,13 @@ C<:DisableThisColorscheme>                            X<:DisableThisColorscheme>
 Disable this colorscheme.
 (Set colorschmeme priority to 0.)
 
-C<:LikeThisColorscheme [count]>                          X<:LikeThisColorscheme>
-Increase priority by 10. (default)
-If count is passed, increase priority according to count.
+C<:LikeThisColorscheme [size]>                           X<:LikeThisColorscheme>
+Increase priority by `g:randomcolorscheme_changesize`. (default)
+If size is passed, increase priority according to size.
 
-C<:HateThisColorscheme [count]>                          X<:HateThisColorscheme>
-Decrease priority by 10. (default)
-If count is passed, decrease priority according to count.
+C<:HateThisColorscheme [size]>                           X<:HateThisColorscheme>
+Decrease priority by `g:randomcolorscheme_changesize`. (default)
+If size is passed, decrease priority according to size.
 
 =head1 Config X<randomcolorscheme-config>
 
@@ -141,6 +141,10 @@ C<g:randomcolorscheme_background>              X<g:randomcolorscheme_background>
 "dark" or "light"
 If this option is set, the background option set after the colorscheme change is set
 default is ""
+
+C<g:randomcolorscheme_changesize>              X<g:randomcolorscheme_changesize>
+Priority size changed during LikeThisColorscheme and HatesThisColorscheme.
+default is 10
 
 C<g:randomcolorscheme_path>                          X<g:randomcolorscheme_path>
 The path to the colorscheme config file.

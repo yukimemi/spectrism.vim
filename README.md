@@ -60,13 +60,13 @@ Enable randomcolorscheme.
 Disable this colorscheme.
 (Set colorschmeme priority to 0.)
 
-`:LikeThisColorscheme [count]`                          
-Increase priority by 10. (default)
-If count is passed, increase priority according to count.
+`:LikeThisColorscheme [size]`                           
+Increase priority by `g:randomcolorscheme_changesize`. (default)
+If size is passed, increase priority according to size.
 
-`:HateThisColorscheme [count]`                          
-Decrease priority by 10. (default)
-If count is passed, decrease priority according to count.
+`:HateThisColorscheme [size]`                           
+Decrease priority by `g:randomcolorscheme_changesize`. (default)
+If size is passed, decrease priority according to size.
 
 # Config 
 
@@ -128,6 +128,10 @@ default is []
 "dark" or "light"
 If this option is set, the background option set after the colorscheme change is set
 default is ""
+
+`g:randomcolorscheme_changesize`              
+Priority size changed during LikeThisColorscheme and HatesThisColorscheme.
+default is 10
 
 `g:randomcolorscheme_path`                          
 The path to the colorscheme config file.

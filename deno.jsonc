@@ -2,7 +2,7 @@
   "tasks": {
     "markdown": "deno run --allow-net --allow-read --allow-write https://pax.deno.dev/Omochice/podeno markdown --in ./pod/randomcolorscheme.pod --out ./README.md",
     "vimdoc": "deno run --allow-net --allow-read --allow-write https://pax.deno.dev/Omochice/podeno vimdoc --in ./pod/randomcolorscheme.pod --out ./doc/randomcolorscheme.txt",
-    "doc": "deno task markdown && deno task vimdoc",
+    "doc": "deno task markdown && deno task vimdoc"
   },
   "fmt": {
     "useTabs": false,
