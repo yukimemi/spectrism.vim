@@ -37,7 +37,7 @@ let disables: string[] = [];
 let match = "";
 let notmatch = "";
 let background = "";
-let changeSize = 10;
+let changeSize = 50;
 let colorschemePath = join(xdg.config(), "randomcolorscheme/colorschemes.toml");
 let enable = true;
 

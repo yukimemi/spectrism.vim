@@ -131,7 +131,7 @@ default is ""
 
 `g:randomcolorscheme_changesize`              
 Priority size changed during LikeThisColorscheme and HatesThisColorscheme.
-default is 10
+default is 50
 
 `g:randomcolorscheme_path`                          
 The path to the colorscheme config file.
