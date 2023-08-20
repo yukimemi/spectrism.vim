@@ -33,7 +33,7 @@ jobs:
           } >> $GITHUB_OUTPUT
 
       - name: Type check
-        run: deno check $(find . -type f | grep -E ".*\.tsx?$" -)
+        run: deno task check
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3

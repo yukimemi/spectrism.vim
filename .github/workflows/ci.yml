@@ -1,4 +1,4 @@
-name: Deno Test
+name: ci
 
 on:
   push:
@@ -12,13 +12,9 @@ on:
     paths:
       - '**.ts'
 
-permissions:
-  contents: read
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
@@ -28,11 +24,5 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Verify formatting
-        run: deno fmt --check
-
-      - name: Run linter
-        run: deno lint
-
-      - name: Run tests
-        run: deno test --allow-all --allow-none
+      - name: Run CI
+        run: deno task ci
