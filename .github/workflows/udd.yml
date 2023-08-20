@@ -32,8 +32,8 @@ jobs:
             echo EOF
           } >> $GITHUB_OUTPUT
 
-      - name: Type check
-        run: deno task check
+      - name: Check Deno
+        run: deno task ci
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
