@@ -4,13 +4,13 @@
 // Last Change : 2023/07/30 20:02:03.
 // =============================================================================
 
-import * as autocmd from "https://deno.land/x/denops_std@v5.0.2/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v5.0.2/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v5.0.2/helper/mod.ts";
-import * as nvimFn from "https://deno.land/x/denops_std@v5.0.2/function/nvim/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v5.0.2/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v5.0.2/variable/mod.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.2/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v5.1.0/autocmd/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v5.1.0/function/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v5.1.0/helper/mod.ts";
+import * as nvimFn from "https://deno.land/x/denops_std@v5.1.0/function/nvim/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v5.1.0/option/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v5.1.0/variable/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.1.0/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
 import { walk } from "https://deno.land/std@0.208.0/fs/walk.ts";
