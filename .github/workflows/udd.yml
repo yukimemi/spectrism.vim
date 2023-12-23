@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
@@ -36,8 +36,15 @@ jobs:
       - name: Check Deno
         run: deno task ci
 
+      - name: Generate app token
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v5
         with:
           commit-message: "chore(deps): Update deno dependencies"
           title: Update Deno dependencies
@@ -54,3 +61,4 @@ jobs:
           labels: automerge
           author: GitHub <noreply@github.com>
           delete-branch: true
+          token: ${{ steps.generate-token.outputs.token }}
