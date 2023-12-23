@@ -1,11 +1,8 @@
 name: automerge
 
 on:
-  workflow_run:
-    workflows: [udd]
-    types:
-      - completed
-  pull_request:
+  workflow_dispatch:
+  pull_request_target:
     types:
       - labeled
       - unlabeled
@@ -28,6 +25,9 @@ jobs:
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
