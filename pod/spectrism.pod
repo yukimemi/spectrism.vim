@@ -1,0 +1,198 @@
+---
+name: spectrism
+description: A random colorscheme plugin.
+---
+
+=pod
+
+=head1 spectrism.vim
+
+Denops random colorscheme.
+
+=head1 Features X<spectrism-features>
+
+This plugin change the colorscheme for Vim / Neovim.
+
+=head1 Installation X<spectrism-installation>
+
+If you use L<folke/lazy.nvim|https://github.com/folke/lazy.nvim>.
+
+=begin lua
+
+{
+  "yukimemi/spectrism.vim",
+  lazy = false,
+  dependencies = {
+    "vim-denops/denops.vim",
+  },
+}
+
+=end lua
+
+If you use L<yukimemi/dvpm|https://github.com/yukimemi/dvpm>.
+
+=begin typescript
+
+dvpm.add({ url: "yukimemi/spectrism.vim" });
+
+=end typescript
+
+=head1 Requirements X<spectrism-requirements>
+
+=item [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
+
+=item [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
+
+=head1 Usage X<spectrism-usage>
+
+No special settings are required.
+By default it changes the colorscheme every 3,600 seconds.
+
+=head1 Commands X<spectrism-commands>
+
+C<:ChangeColorscheme>                                      X<:ChangeColorscheme>
+Change the colorscheme.
+
+C<:OpenColorschemeSetting>                            X<:OpenColorschemeSetting>
+Open the spectrism priority setting.
+colorschme setting is a toml file.
+Colorschemes with higher numerical priorities are preferred.
+
+C<:ResetColorschemeSetting>                          X<:ResetColorschemeSetting>
+Remove the spectrism setting file.
+The configuration file will be automatically regenerated the next time you start Vim / Neovim.
+
+C<:DisableSpectrism>                        X<:DisableSpectrism>
+Disable spectrism.
+Stop changing colorschme.
+
+C<:EnableSpectrism>                          X<:EnableSpectrism>
+Enable spectrism.
+
+C<:DisableThisColorscheme>                            X<:DisableThisColorscheme>
+Disable this colorscheme.
+(Set colorschmeme priority to 0.)
+
+C<:LikeThisColorscheme [size]>                           X<:LikeThisColorscheme>
+Increase priority by `g:spectrism_changesize`. (default)
+If size is passed, increase priority according to size.
+
+C<:HateThisColorscheme [size]>                           X<:HateThisColorscheme>
+Decrease priority by `g:spectrism_changesize`. (default)
+If size is passed, decrease priority according to size.
+
+=head1 Config X<spectrism-config>
+
+No settings are required. However, the following settings can be made if necessary.
+
+C<g:spectrism_debug>                        X<g:spectrism_debug>
+Enable debug messages.
+default is v:false
+
+C<g:spectrism_echo>                          X<g:spectrism_echo>
+Whether to echo the modified colorscheme.
+default is v:true
+
+C<g:spectrism_notify>                      X<g:spectrism_notify>
+Whether to `vim.notify` the modified colorscheme. (Neovim only)
+default is v:false
+
+C<g:spectrism_interval>                  X<g:spectrism_interval>
+Interval to change colorscheme.
+default is 3600 (seconds)
+
+C<g:spectrism_retry>                        X<g:spectrism_retry>
+Whether to retry change colorscheme when after changed colorschme is same before.
+default is v:true
+
+C<g:spectrism_checkwait>                X<g:spectrism_checkwait>
+Time to wait before checking `g:colors_name` after changing colorschme.
+`g:colors_name` may not be included immediately after changing colorschme.
+default is 3000 (milliseconds)
+
+C<g:spectrism_enables>                    X<g:spectrism_enables>
+A list of colorschemes to be used for selection.
+If this list is set, only the changing colorschme that includes this list will be used.
+Not included colorscheme's priority are all set to 0.
+default is [] (Use all colorscheme)
+
+C<g:spectrism_disables>                  X<g:spectrism_disables>
+A list of colorschemes to be not used for selection.
+If this list is set, only the changing colorschme that not includes this list will be used.
+Included colorscheme's priority are all set to 0.
+default is [] (Use all colorscheme)
+
+C<g:spectrism_match>                        X<g:spectrism_match>
+A match pattern to be used for selection. (regexp)
+If this pattern is set, only the changing colorschme that match this pattern will be used.
+default is "" (Use all colorscheme)
+
+C<g:spectrism_notmatch>                  X<g:spectrism_notmatch>
+A match pattern to be not used for selection. (regexp)
+If this pattern is set, only the changing colorschme that not match this pattern will be used.
+default is "" (Use all colorscheme)
+
+C<g:spectrism_events>                      X<g:spectrism_events>
+A list of events to be used for selection.
+If this list is set, the colorscheme will be changed if the target event fires.
+default is []
+
+C<g:spectrism_background>              X<g:spectrism_background>
+"dark" or "light"
+If this option is set, the background option set after the colorscheme change is set
+default is ""
+
+C<g:spectrism_changesize>              X<g:spectrism_changesize>
+Priority size changed during LikeThisColorscheme and HatesThisColorscheme.
+default is 50
+
+C<g:spectrism_path>                          X<g:spectrism_path>
+The path to the colorscheme config file.
+default is $XDG_CONFIG_HOME/spectrism/colorschemes.toml
+
+C<g:spectrism_colors_path>            X<g:spectrism_colors_path>
+colorschme looks from runtimepath and, for Neovim, from stdpath("data").
+If it is delayed by plugin manager etc.,
+it may not be included in the runtimepath at the time of startup.
+If you still want to use spectrism, add it manually to
+`g:spectrism_colors_path` as a search path.
+This path will be searched recursively, and `colors/*.vim` or `colors/*.lua` files
+will be registered as colorscheme.
+default is []
+
+C<g:spectrism_priority>                  X<g:spectrism_priority>
+The priority of the colorscheme. (readonly)
+You can use this value for statusline.
+
+=head1 Example X<spectrism-example>
+
+=begin vim
+
+let g:spectrism_debug = v:false
+let g:spectrism_echo = v:false
+let g:spectrism_notify = v:true
+let g:spectrism_interval = 60
+let g:spectrism_enables = ["morning", "ron"]
+let g:spectrism_disables = ["evening", "default"]
+let g:spectrism_match = "base16"
+let g:spectrism_notmatch = "light"
+let g:spectrism_events = ["CursorHold", "FocusLost", "BufWritePost"]
+let g:spectrism_background = "dark"
+let g:spectrism_path = expand("~/.cache/colors.toml")
+let g:spectrism_colors_path = [expand("~/.cache/vim/plugs")]
+
+" Useful mappings
+nnoremap <space>rc <cmd>ChangeColorscheme<cr>
+nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
+nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
+nnoremap <space>rh <cmd>HateThisColorscheme<cr>
+
+=end vim
+
+=head1 License X<spectrism-license>
+
+Licensed under MIT License.
+
+Copyright (c) 2023 yukimemi
+
+=cut
