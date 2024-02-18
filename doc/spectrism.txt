@@ -1,198 +1,166 @@
-*randomcolorscheme.txt*                          A random colorscheme plugin.
+*spectrism.txt*                                  A random colorscheme plugin.
 =============================================================================
-dps-randomcolorscheme~
+spectrism.vim~
 
-Denops random colorscheme.
+Vim / Neovim random colorscheme plugin.
+
+spectrism is spectrum and prism.
+
 
 =============================================================================
 Features ~
-                                                 *randomcolorscheme-features*
+                                                         *spectrism-features*
 
 This plugin change the colorscheme for Vim / Neovim.
 
 =============================================================================
 Installation ~
-                                             *randomcolorscheme-installation*
+                                                     *spectrism-installation*
 
 If you use folke/lazy.nvim |https://github.com/folke/lazy.nvim|.
 
->
-	{
-	  "yukimemi/dps-randomcolorscheme",
-	  lazy = false,
-	  dependencies = {
-	    "vim-denops/denops.vim",
-	  },
-	}
-<
-
 If you use yukimemi/dvpm |https://github.com/yukimemi/dvpm|.
-
->
-	dvpm.add({ url: "yukimemi/dps-randomcolorscheme" });
-<
 
 =============================================================================
 Requirements ~
-                                             *randomcolorscheme-requirements*
+                                                     *spectrism-requirements*
 
 - [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
 - [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
 =============================================================================
 Usage ~
-                                                    *randomcolorscheme-usage*
+                                                            *spectrism-usage*
 
 No special settings are required.
 By default it changes the colorscheme every 3,600 seconds.
 
 =============================================================================
 Commands ~
-                                                 *randomcolorscheme-commands*
+                                                         *spectrism-commands*
 
 `:ChangeColorscheme`                                      *:ChangeColorscheme*
 Change the colorscheme.
 
 `:OpenColorschemeSetting`                            *:OpenColorschemeSetting*
-Open the randomcolorscheme priority setting.
+Open the spectrism priority setting.
 colorschme setting is a toml file.
 Colorschemes with higher numerical priorities are preferred.
 
 `:ResetColorschemeSetting`                          *:ResetColorschemeSetting*
-Remove the randomcolorscheme setting file.
+Remove the spectrism setting file.
 The configuration file will be automatically regenerated the next time you start Vim / Neovim.
 
-`:DisableRandomColorscheme`                        *:DisableRandomColorscheme*
-Disable randomcolorscheme.
+`:DisableSpectrism`                                        *:DisableSpectrism*
+Disable spectrism.
 Stop changing colorschme.
 
-`:EnableRandomColorscheme`                          *:EnableRandomColorscheme*
-Enable randomcolorscheme.
+`:EnableSpectrism`                                          *:EnableSpectrism*
+Enable spectrism.
 
 `:DisableThisColorscheme`                            *:DisableThisColorscheme*
 Disable this colorscheme.
 (Set colorschmeme priority to 0.)
 
 `:LikeThisColorscheme [size]`                           *:LikeThisColorscheme*
-Increase priority by `g:randomcolorscheme_changesize`. (default)
+Increase priority by `g:spectrism_changesize`. (default)
 If size is passed, increase priority according to size.
 
 `:HateThisColorscheme [size]`                           *:HateThisColorscheme*
-Decrease priority by `g:randomcolorscheme_changesize`. (default)
+Decrease priority by `g:spectrism_changesize`. (default)
 If size is passed, decrease priority according to size.
 
 =============================================================================
 Config ~
-                                                   *randomcolorscheme-config*
+                                                            *spectrism-config*
 
 No settings are required. However, the following settings can be made if necessary.
 
-`g:randomcolorscheme_debug`                        *g:randomcolorscheme_debug*
+`g:spectrism_debug`                                        *g:spectrism_debug*
 Enable debug messages.
 default is v:false
 
-`g:randomcolorscheme_echo`                          *g:randomcolorscheme_echo*
+`g:spectrism_echo`                                          *g:spectrism_echo*
 Whether to echo the modified colorscheme.
 default is v:true
 
-`g:randomcolorscheme_notify`                      *g:randomcolorscheme_notify*
+`g:spectrism_notify`                                      *g:spectrism_notify*
 Whether to `vim.notify` the modified colorscheme. (Neovim only)
 default is v:false
 
-`g:randomcolorscheme_interval`                  *g:randomcolorscheme_interval*
+`g:spectrism_interval`                                  *g:spectrism_interval*
 Interval to change colorscheme.
 default is 3600 (seconds)
 
-`g:randomcolorscheme_retry`                        *g:randomcolorscheme_retry*
+`g:spectrism_retry`                                        *g:spectrism_retry*
 Whether to retry change colorscheme when after changed colorschme is same before.
 default is v:true
 
-`g:randomcolorscheme_checkwait`                *g:randomcolorscheme_checkwait*
+`g:spectrism_checkwait`                                *g:spectrism_checkwait*
 Time to wait before checking `g:colors_name` after changing colorschme.
 `g:colors_name` may not be included immediately after changing colorschme.
 default is 3000 (milliseconds)
 
-`g:randomcolorscheme_enables`                    *g:randomcolorscheme_enables*
+`g:spectrism_enables`                                    *g:spectrism_enables*
 A list of colorschemes to be used for selection.
 If this list is set, only the changing colorschme that includes this list will be used.
 Not included colorscheme's priority are all set to 0.
 default is [] (Use all colorscheme)
 
-`g:randomcolorscheme_disables`                  *g:randomcolorscheme_disables*
+`g:spectrism_disables`                                  *g:spectrism_disables*
 A list of colorschemes to be not used for selection.
 If this list is set, only the changing colorschme that not includes this list will be used.
 Included colorscheme's priority are all set to 0.
 default is [] (Use all colorscheme)
 
-`g:randomcolorscheme_match`                        *g:randomcolorscheme_match*
+`g:spectrism_match`                                        *g:spectrism_match*
 A match pattern to be used for selection. (regexp)
 If this pattern is set, only the changing colorschme that match this pattern will be used.
 default is "" (Use all colorscheme)
 
-`g:randomcolorscheme_notmatch`                  *g:randomcolorscheme_notmatch*
+`g:spectrism_notmatch`                                  *g:spectrism_notmatch*
 A match pattern to be not used for selection. (regexp)
 If this pattern is set, only the changing colorschme that not match this pattern will be used.
 default is "" (Use all colorscheme)
 
-`g:randomcolorscheme_events`                      *g:randomcolorscheme_events*
+`g:spectrism_events`                                      *g:spectrism_events*
 A list of events to be used for selection.
 If this list is set, the colorscheme will be changed if the target event fires.
 default is []
 
-`g:randomcolorscheme_background`              *g:randomcolorscheme_background*
+`g:spectrism_background`                              *g:spectrism_background*
 "dark" or "light"
 If this option is set, the background option set after the colorscheme change is set
 default is ""
 
-`g:randomcolorscheme_changesize`              *g:randomcolorscheme_changesize*
+`g:spectrism_changesize`                              *g:spectrism_changesize*
 Priority size changed during LikeThisColorscheme and HatesThisColorscheme.
 default is 50
 
-`g:randomcolorscheme_path`                          *g:randomcolorscheme_path*
+`g:spectrism_path`                                          *g:spectrism_path*
 The path to the colorscheme config file.
-default is $XDG_CONFIG_HOME/randomcolorscheme/colorschemes.toml
+default is $XDG_CONFIG_HOME/spectrism/colorschemes.toml
 
-`g:randomcolorscheme_colors_path`            *g:randomcolorscheme_colors_path*
+`g:spectrism_colors_path`                            *g:spectrism_colors_path*
 colorschme looks from runtimepath and, for Neovim, from stdpath("data").
 If it is delayed by plugin manager etc.,
 it may not be included in the runtimepath at the time of startup.
-If you still want to use randomcolorscheme, add it manually to
-`g:randomcolorscheme_colors_path` as a search path.
+If you still want to use spectrism, add it manually to
+`g:spectrism_colors_path` as a search path.
 This path will be searched recursively, and `colors/*.vim` or `colors/*.lua` files
 will be registered as colorscheme.
 default is []
 
-`g:randomcolorscheme_priority`                  *g:randomcolorscheme_priority*
+`g:spectrism_priority`                                  *g:spectrism_priority*
 The priority of the colorscheme. (readonly)
 You can use this value for statusline.
 
 =============================================================================
 Example ~
-                                                  *randomcolorscheme-example*
-
->
-	let g:randomcolorscheme_debug = v:false
-	let g:randomcolorscheme_echo = v:false
-	let g:randomcolorscheme_notify = v:true
-	let g:randomcolorscheme_interval = 60
-	let g:randomcolorscheme_enables = ["morning", "ron"]
-	let g:randomcolorscheme_disables = ["evening", "default"]
-	let g:randomcolorscheme_match = "base16"
-	let g:randomcolorscheme_notmatch = "light"
-	let g:randomcolorscheme_events = ["CursorHold", "FocusLost", "BufWritePost"]
-	let g:randomcolorscheme_background = "dark"
-	let g:randomcolorscheme_path = expand("~/.cache/colors.toml")
-	let g:randomcolorscheme_colors_path = [expand("~/.cache/vim/plugs")]
-	
-	" Useful mappings
-	nnoremap <space>rc <cmd>ChangeColorscheme<cr>
-	nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
-	nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
-	nnoremap <space>rh <cmd>HateThisColorscheme<cr>
-<
+                                                           *spectrism-example*
 
 =============================================================================
 License ~
-                                                  *randomcolorscheme-license*
+                                                           *spectrism-license*
 
 Licensed under MIT License.
 
