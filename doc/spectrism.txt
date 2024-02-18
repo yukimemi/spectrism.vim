@@ -19,7 +19,21 @@ Installation ~
 
 If you use folke/lazy.nvim |https://github.com/folke/lazy.nvim|.
 
+>
+  {
+    "yukimemi/spectrism.vim",
+    lazy = false,
+    dependencies = {
+      "vim-denops/denops.vim",
+    },
+  }
+<
+
 If you use yukimemi/dvpm |https://github.com/yukimemi/dvpm|.
+
+>
+  dvpm.add({ url: "yukimemi/spectrism.vim" });
+<
 
 =============================================================================
 Requirements ~
@@ -27,6 +41,7 @@ Requirements ~
 
 - [Deno - A modern runtime for JavaScript and TypeScript](https://deno.land/)
 - [vim-denops/denops.vim: 🐜 An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno](https://github.com/vim-denops/denops.vim)
+
 =============================================================================
 Usage ~
                                                             *spectrism-usage*
@@ -38,19 +53,19 @@ By default it changes the colorscheme every 3,600 seconds.
 Commands ~
                                                          *spectrism-commands*
 
-`:ChangeColorscheme`                                      *:ChangeColorscheme*
+`:ChangeColorscheme`                                     *:ChangeColorscheme*
 Change the colorscheme.
 
-`:OpenColorschemeSetting`                            *:OpenColorschemeSetting*
+`:OpenColorschemeSetting`                           *:OpenColorschemeSetting*
 Open the spectrism priority setting.
 colorschme setting is a toml file.
 Colorschemes with higher numerical priorities are preferred.
 
-`:ResetColorschemeSetting`                          *:ResetColorschemeSetting*
+`:ResetColorschemeSetting`                         *:ResetColorschemeSetting*
 Remove the spectrism setting file.
 The configuration file will be automatically regenerated the next time you start Vim / Neovim.
 
-`:DisableSpectrism`                                        *:DisableSpectrism*
+`:DisableSpectrism`                                       *:DisableSpectrism*
 Disable spectrism.
 Stop changing colorschme.
 
@@ -95,7 +110,7 @@ default is 3600 (seconds)
 Whether to retry change colorscheme when after changed colorschme is same before.
 default is v:true
 
-`g:spectrism_checkwait`                                *g:spectrism_checkwait*
+`g:spectrism_checkwait`                               *g:spectrism_checkwait*
 Time to wait before checking `g:colors_name` after changing colorschme.
 `g:colors_name` may not be included immediately after changing colorschme.
 default is 3000 (milliseconds)
@@ -157,6 +172,26 @@ You can use this value for statusline.
 =============================================================================
 Example ~
                                                            *spectrism-example*
+>
+  let g:spectrism_debug = v:false
+  let g:spectrism_echo = v:false
+  let g:spectrism_notify = v:true
+  let g:spectrism_interval = 60
+  let g:spectrism_enables = ["morning", "ron"]
+  let g:spectrism_disables = ["evening", "default"]
+  let g:spectrism_match = "base16"
+  let g:spectrism_notmatch = "light"
+  let g:spectrism_events = ["CursorHold", "FocusLost", "BufWritePost"]
+  let g:spectrism_background = "dark"
+  let g:spectrism_path = expand("~/.cache/colors.toml")
+  let g:spectrism_colors_path = [expand("~/.cache/vim/plugs")]
+
+  " Useful mappings
+  nnoremap <space>rc <cmd>ChangeColorscheme<cr>
+  nnoremap <space>rd <cmd>DisableThisColorscheme<cr>
+  nnoremap <space>rl <cmd>LikeThisColorscheme<cr>
+  nnoremap <space>rh <cmd>HateThisColorscheme<cr>
+<
 
 =============================================================================
 License ~
