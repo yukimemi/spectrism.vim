@@ -21,7 +21,7 @@ import {
   join,
   normalize,
 } from "https://deno.land/std@0.222.1/path/mod.ts";
-import { ensure, is } from "https://deno.land/x/unknownutil@v3.17.2/mod.ts";
+import { ensure, is } from "https://deno.land/x/unknownutil@v3.17.3/mod.ts";
 import { parse, stringify } from "https://deno.land/std@0.222.1/toml/mod.ts";
 import { filterEntries } from "https://deno.land/std@0.222.1/collections/filter_entries.ts";
 import { mapEntries } from "https://deno.land/std@0.222.1/collections/map_entries.ts";
