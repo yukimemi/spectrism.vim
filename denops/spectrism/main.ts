@@ -1,9 +1,3 @@
-// =============================================================================
-// File        : main.ts
-// Author      : yukimemi
-// Last Change : 2024/02/18 14:41:07.
-// =============================================================================
-
 import * as autocmd from "https://deno.land/x/denops_std@v6.5.0/autocmd/mod.ts";
 import * as fn from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
 import * as helper from "https://deno.land/x/denops_std@v6.5.0/helper/mod.ts";
@@ -12,20 +6,20 @@ import * as op from "https://deno.land/x/denops_std@v6.5.0/option/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v6.5.0/variable/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { delay } from "https://deno.land/std@0.224.0/async/delay.ts";
-import { walk } from "https://deno.land/std@0.224.0/fs/walk.ts";
+import { delay } from "jsr:@std/async@0.224.0/delay";
+import { walk } from "jsr:@std/fs@0.224.0/walk";
 import {
   basename,
   dirname,
   extname,
   join,
   normalize,
-} from "https://deno.land/std@0.224.0/path/mod.ts";
+} from "jsr:@std/path@0.224.0";
 import { ensure, is } from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
-import { parse, stringify } from "https://deno.land/std@0.224.0/toml/mod.ts";
-import { filterEntries } from "https://deno.land/std@0.224.0/collections/filter_entries.ts";
-import { mapEntries } from "https://deno.land/std@0.224.0/collections/map_entries.ts";
-import { ensureDir } from "https://deno.land/std@0.224.0/fs/mod.ts";
+import { parse, stringify } from "jsr:@std/toml@0.224.0";
+import { filterEntries } from "jsr:@std/collections@0.224.0/filter-entries";
+import { mapEntries } from "jsr:@std/collections@0.224.0/map-entries";
+import { ensureDir } from "jsr:@std/fs@0.224.0";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
 const defaultPriority = 100;
