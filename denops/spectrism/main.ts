@@ -4,7 +4,7 @@ import * as helper from "https://deno.land/x/denops_std@v6.5.0/helper/mod.ts";
 import * as nvimFn from "https://deno.land/x/denops_std@v6.5.0/function/nvim/mod.ts";
 import * as op from "https://deno.land/x/denops_std@v6.5.0/option/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v6.5.0/variable/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import { delay } from "jsr:@std/async@0.224.0/delay";
