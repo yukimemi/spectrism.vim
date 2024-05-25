@@ -4,18 +4,12 @@ import * as helper from "https://deno.land/x/denops_std@v6.5.0/helper/mod.ts";
 import * as nvimFn from "https://deno.land/x/denops_std@v6.5.0/function/nvim/mod.ts";
 import * as op from "https://deno.land/x/denops_std@v6.5.0/option/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v6.5.0/variable/mod.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
 import { delay } from "jsr:@std/async@0.224.0/delay";
 import { walk } from "jsr:@std/fs@0.224.0/walk";
-import {
-  basename,
-  dirname,
-  extname,
-  join,
-  normalize,
-} from "jsr:@std/path@0.224.0";
-import { ensure, is } from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
+import { basename, dirname, extname, join, normalize } from "jsr:@std/path@0.224.0";
 import { parse, stringify } from "jsr:@std/toml@0.224.0";
 import { filterEntries } from "jsr:@std/collections@0.224.0/filter-entries";
 import { mapEntries } from "jsr:@std/collections@0.224.0/map-entries";
@@ -43,7 +37,8 @@ let enable = true;
 
 let events: autocmd.AutocmdEvent[] = [];
 
-type Colorschemes = Record<string, number>;
+const ColorschemesSchema = z.record(z.string(), z.number());
+type Colorschemes = z.infer<typeof ColorschemesSchema>;
 
 let colorschemes: Colorschemes = {};
 
@@ -58,10 +53,7 @@ const loadColorschemes = async (): Promise<Colorschemes> => {
   clog(`load: ${colorschemePath}`);
   let colors: Colorschemes = {};
   try {
-    colors = ensure(
-      parse(await Deno.readTextFile(colorschemePath)),
-      is.RecordOf(is.Number),
-    );
+    colors = ColorschemesSchema.parse(parse(await Deno.readTextFile(colorschemePath)));
     clog({ colors });
   } catch {
     clog(`Failed to load ${colorschemePath}`);
@@ -139,7 +131,7 @@ export async function main(denops: Denops): Promise<void> {
 
   // Migration.
   beforeColors = mapEntries(beforeColors, ([name, priority]) => {
-    if (is.Boolean(priority)) {
+    if (z.boolean().safeParse(priority).success) {
       return [name, priority ? defaultPriority : 0];
     } else {
       return [name, priority];
@@ -151,7 +143,7 @@ export async function main(denops: Denops): Promise<void> {
     new Set((await Promise.all(
       [
         ...(await op.runtimepath.get(denops)).split(","),
-        await fn.has(denops, "nvim") ? ensure(await nvimFn.stdpath(denops, "data"), is.String) : "",
+        await fn.has(denops, "nvim") ? z.string().parse(await nvimFn.stdpath(denops, "data")) : "",
         ...colors_path,
       ].map(
         async (c) => {
@@ -233,10 +225,7 @@ export async function main(denops: Denops): Promise<void> {
           clog(`enable: ${enable}`);
           return;
         }
-        const nowColor = ensure(
-          await vars.g.get(denops, "colors_name", ""),
-          is.String,
-        );
+        const nowColor = z.string().parse(await vars.g.get(denops, "colors_name", ""));
         const enableColors = filterEntries(
           colorschemes,
           ([_name, priority]) => priority > 0,
@@ -271,10 +260,7 @@ export async function main(denops: Denops): Promise<void> {
         }
 
         await delay(checkWait);
-        const afterColor = ensure(
-          await vars.g.get(denops, "colors_name", ""),
-          is.String,
-        );
+        const afterColor = z.string().parse(await vars.g.get(denops, "colors_name", ""));
         if (!afterColor) {
           await denops.dispatcher.change();
           return;
@@ -293,7 +279,7 @@ export async function main(denops: Denops): Promise<void> {
     },
 
     async disableColorscheme(): Promise<void> {
-      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
+      const c = z.string().parse(await vars.g.get(denops, "colors_name", ""));
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
@@ -311,8 +297,8 @@ export async function main(denops: Denops): Promise<void> {
 
     async like(...args: unknown[]): Promise<void> {
       clog({ args });
-      const val = Number(ensure(args, is.Array)[0] ?? changeSize);
-      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
+      const val = z.number().array().parse(args)[0] ?? changeSize;
+      const c = z.string().parse(await vars.g.get(denops, "colors_name", ""));
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
@@ -325,8 +311,8 @@ export async function main(denops: Denops): Promise<void> {
     },
 
     async hate(...args: unknown[]): Promise<void> {
-      const val = Number(ensure(args, is.Array)[0] ?? changeSize);
-      const c = ensure(await vars.g.get(denops, "colors_name", ""), is.String);
+      const val = z.number().array().parse(args)[0] ?? changeSize;
+      const c = z.string().parse(await vars.g.get(denops, "colors_name", ""));
       if (c === "") {
         clog(`Can't get g:colors_name... so skip.`);
         return;
