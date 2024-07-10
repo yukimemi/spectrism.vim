@@ -17,8 +17,8 @@ import { delay } from "jsr:@std/async@0.224.2/delay";
 import { walk } from "jsr:@std/fs@0.229.3/walk";
 import { basename, dirname, extname, join, normalize } from "jsr:@std/path@0.225.2";
 import { parse, stringify } from "jsr:@std/toml@0.224.1";
-import { filterEntries } from "jsr:@std/collections@1.0.2/filter-entries";
-import { mapEntries } from "jsr:@std/collections@1.0.2/map-entries";
+import { filterEntries } from "jsr:@std/collections@1.0.3/filter-entries";
+import { mapEntries } from "jsr:@std/collections@1.0.3/map-entries";
 import { ensureDir } from "jsr:@std/fs@0.229.3";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
