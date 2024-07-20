@@ -13,12 +13,12 @@ import * as vars from "https://deno.land/x/denops_std@v6.5.1/variable/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { delay } from "jsr:@std/async@0.224.2/delay";
+import { delay } from "jsr:@std/async@1.0.0/delay";
 import { walk } from "jsr:@std/fs@0.229.3/walk";
-import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.0";
+import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.1";
 import { parse, stringify } from "jsr:@std/toml@1.0.0";
-import { filterEntries } from "jsr:@std/collections@1.0.4/filter-entries";
-import { mapEntries } from "jsr:@std/collections@1.0.4/map-entries";
+import { filterEntries } from "jsr:@std/collections@1.0.5/filter-entries";
+import { mapEntries } from "jsr:@std/collections@1.0.5/map-entries";
 import { ensureDir } from "jsr:@std/fs@0.229.3";
 import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
 
