@@ -1,26 +1,25 @@
 // =============================================================================
 // File        : main.ts
 // Author      : yukimemi
-// Last Change : 2024/05/25 15:51:35.
+// Last Change : 2024/07/28 21:34:39.
 // =============================================================================
 
-import * as autocmd from "https://deno.land/x/denops_std@v6.5.1/autocmd/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v6.5.1/function/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v6.5.1/helper/mod.ts";
-import * as nvimFn from "https://deno.land/x/denops_std@v6.5.1/function/nvim/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v6.5.1/option/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v6.5.1/variable/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
-import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { delay } from "jsr:@std/async@1.0.1/delay";
-import { walk } from "jsr:@std/fs@1.0.0/walk";
+import * as autocmd from "jsr:@denops/std@7.0.0/autocmd";
+import * as fn from "jsr:@denops/std@7.0.0/function";
+import * as helper from "jsr:@denops/std@7.0.0/helper";
+import * as nvimFn from "jsr:@denops/std@7.0.0/function/nvim";
+import * as op from "jsr:@denops/std@7.0.0/option";
+import * as vars from "jsr:@denops/std@7.0.0/variable";
+import Chance from "npm:chance@1.1.11";
+import type { Denops } from "jsr:@denops/std@7.0.0";
 import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.2";
-import { parse, stringify } from "jsr:@std/toml@1.0.0";
-import { filterEntries } from "jsr:@std/collections@1.0.5/filter-entries";
-import { mapEntries } from "jsr:@std/collections@1.0.5/map-entries";
+import { delay } from "jsr:@std/async@1.0.1";
+import { dir } from "jsr:@cross/dir@1.1.0";
 import { ensureDir } from "jsr:@std/fs@1.0.0";
-import Chance from "https://cdn.skypack.dev/chance@1.1.11/";
+import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.5";
+import { parse, stringify } from "jsr:@std/toml@1.0.0";
+import { walk } from "jsr:@std/fs@1.0.0";
+import { z } from "npm:zod@3.23.8";
 
 const defaultPriority = 100;
 
@@ -38,7 +37,7 @@ let match = "";
 let notmatch = "";
 let background = "";
 let changeSize = 50;
-let colorschemePath = join(xdg.config(), "spectrism/colorschemes.toml");
+let colorschemePath = join(await dir("config"), "spectrism/colorschemes.toml");
 let enable = true;
 
 let events: autocmd.AutocmdEvent[] = [];
