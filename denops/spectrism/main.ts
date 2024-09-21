@@ -4,20 +4,20 @@
 // Last Change : 2024/07/28 21:34:39.
 // =============================================================================
 
-import * as autocmd from "jsr:@denops/std@7.0.3/autocmd";
-import * as fn from "jsr:@denops/std@7.0.3/function";
-import * as helper from "jsr:@denops/std@7.0.3/helper";
-import * as nvimFn from "jsr:@denops/std@7.0.3/function/nvim";
-import * as op from "jsr:@denops/std@7.0.3/option";
-import * as vars from "jsr:@denops/std@7.0.3/variable";
+import * as autocmd from "jsr:@denops/std@7.1.1/autocmd";
+import * as fn from "jsr:@denops/std@7.1.1/function";
+import * as helper from "jsr:@denops/std@7.1.1/helper";
+import * as nvimFn from "jsr:@denops/std@7.1.1/function/nvim";
+import * as op from "jsr:@denops/std@7.1.1/option";
+import * as vars from "jsr:@denops/std@7.1.1/variable";
 import Chance from "npm:chance@1.1.12";
-import type { Denops } from "jsr:@denops/std@7.0.3";
-import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.2";
-import { delay } from "jsr:@std/async@1.0.3";
+import type { Denops } from "jsr:@denops/std@7.1.1";
+import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.6";
+import { delay } from "jsr:@std/async@1.0.5";
 import { dir } from "jsr:@cross/dir@1.1.0";
-import { ensureDir } from "jsr:@std/fs@1.0.1";
-import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.5";
-import { parse, stringify } from "jsr:@std/toml@1.0.0";
+import { ensureDir } from "jsr:@std/fs@1.0.3";
+import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.6";
+import { parse, stringify } from "jsr:@std/toml@1.0.1";
 import { walk } from "jsr:@std/fs@1.0.1";
 import { z } from "npm:zod@3.23.8";
 
