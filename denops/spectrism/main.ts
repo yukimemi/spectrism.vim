@@ -16,7 +16,7 @@ import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.6
 import { delay } from "jsr:@std/async@1.0.7";
 import { dir } from "jsr:@cross/dir@1.1.0";
 import { ensureDir } from "jsr:@std/fs@1.0.4";
-import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.8";
+import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.9";
 import { parse, stringify } from "jsr:@std/toml@1.0.1";
 import { walk } from "jsr:@std/fs@1.0.4";
 import { z } from "npm:zod@3.23.8";
