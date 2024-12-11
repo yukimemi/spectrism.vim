@@ -19,7 +19,7 @@ import { ensureDir } from "jsr:@std/fs@1.0.6";
 import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.9";
 import { parse, stringify } from "jsr:@std/toml@1.0.2";
 import { walk } from "jsr:@std/fs@1.0.6";
-import { z } from "npm:zod@3.23.8";
+import { z } from "npm:zod@3.24.1";
 
 const defaultPriority = 100;
 
