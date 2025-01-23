@@ -15,7 +15,7 @@ import type { Denops } from "jsr:@denops/std@7.4.0";
 import { basename, dirname, extname, join, normalize } from "jsr:@std/path@1.0.8";
 import { delay } from "jsr:@std/async@1.0.10";
 import { dir } from "jsr:@cross/dir@1.1.0";
-import { ensureDir } from "jsr:@std/fs@1.0.9";
+import { ensureDir } from "jsr:@std/fs@1.0.10";
 import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.10";
 import { parse, stringify } from "jsr:@std/toml@1.0.2";
 import { walk } from "jsr:@std/fs@1.0.9";
