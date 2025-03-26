@@ -17,7 +17,7 @@ import { delay } from "jsr:@std/async@1.0.12";
 import { dir } from "jsr:@cross/dir@1.1.0";
 import { ensureDir } from "jsr:@std/fs@1.0.15";
 import { filterEntries, mapEntries } from "jsr:@std/collections@1.0.10";
-import { parse, stringify } from "jsr:@std/toml@1.0.2";
+import { parse, stringify } from "jsr:@std/toml@1.0.3";
 import { walk } from "jsr:@std/fs@1.0.14";
 import { z } from "npm:zod@3.24.2";
 
