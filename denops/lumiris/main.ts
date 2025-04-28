@@ -1,7 +1,7 @@
 // =============================================================================
 // File        : main.ts
 // Author      : yukimemi
-// Last Change : 2024/07/28 21:34:39.
+// Last Change : 2025/04/29 00:22:04.
 // =============================================================================
 
 import * as autocmd from "jsr:@denops/std@7.5.0/autocmd";
@@ -37,7 +37,7 @@ let match = "";
 let notmatch = "";
 let background = "";
 let changeSize = 50;
-let colorschemePath = join(await dir("config"), "spectrism/colorschemes.toml");
+let colorschemePath = join(await dir("config"), "lumiris/colorschemes.toml");
 let enable = true;
 
 let events: autocmd.AutocmdEvent[] = [];
@@ -87,30 +87,30 @@ const message = async (denops: Denops, msg: string) => {
 
 export async function main(denops: Denops): Promise<void> {
   // debug.
-  debug = await vars.g.get(denops, "spectrism_debug", debug);
+  debug = await vars.g.get(denops, "lumiris_debug", debug);
   // Merge user config.
-  echo = await vars.g.get(denops, "spectrism_echo", echo);
-  notify = await vars.g.get(denops, "spectrism_notify", notify);
-  retry = await vars.g.get(denops, "spectrism_retry", retry);
-  interval = await vars.g.get(denops, "spectrism_interval", interval);
-  checkWait = await vars.g.get(denops, "spectrism_checkwait", checkWait);
-  enables = await vars.g.get(denops, "spectrism_enables", enables);
-  disables = await vars.g.get(denops, "spectrism_disables", disables);
-  match = await vars.g.get(denops, "spectrism_match", match);
-  notmatch = await vars.g.get(denops, "spectrism_notmatch", notmatch);
-  changeSize = await vars.g.get(denops, "spectrism_changesize", changeSize);
+  echo = await vars.g.get(denops, "lumiris_echo", echo);
+  notify = await vars.g.get(denops, "lumiris_notify", notify);
+  retry = await vars.g.get(denops, "lumiris_retry", retry);
+  interval = await vars.g.get(denops, "lumiris_interval", interval);
+  checkWait = await vars.g.get(denops, "lumiris_checkwait", checkWait);
+  enables = await vars.g.get(denops, "lumiris_enables", enables);
+  disables = await vars.g.get(denops, "lumiris_disables", disables);
+  match = await vars.g.get(denops, "lumiris_match", match);
+  notmatch = await vars.g.get(denops, "lumiris_notmatch", notmatch);
+  changeSize = await vars.g.get(denops, "lumiris_changesize", changeSize);
   background = await vars.g.get(
     denops,
-    "spectrism_background",
+    "lumiris_background",
     background,
   );
-  events = await vars.g.get(denops, "spectrism_events", events);
+  events = await vars.g.get(denops, "lumiris_events", events);
   colorschemePath = normalize(
-    await vars.g.get(denops, "spectrism_path", colorschemePath),
+    await vars.g.get(denops, "lumiris_path", colorschemePath),
   );
   const colors_path: string[] = await vars.g.get(
     denops,
-    "spectrism_colors_path",
+    "lumiris_colors_path",
     [],
   );
 
@@ -250,7 +250,7 @@ export async function main(denops: Denops): Promise<void> {
           return;
         }
 
-        await vars.g.set(denops, "spectrism_priority", priority);
+        await vars.g.set(denops, "lumiris_priority", priority);
         try {
           await denops.cmd(`colorscheme ${colorscheme}`);
         } catch (e) {
@@ -311,7 +311,7 @@ export async function main(denops: Denops): Promise<void> {
       const priority = colorschemes[c] + val;
       await message(denops, `Increase ${c}'s priority to ${priority}`);
       colorschemes[c] = priority;
-      await vars.g.set(denops, "spectrism_priority", priority);
+      await vars.g.set(denops, "lumiris_priority", priority);
       await saveColorschemes();
     },
 
@@ -326,7 +326,7 @@ export async function main(denops: Denops): Promise<void> {
       priority = priority < 0 ? 0 : priority;
       await message(denops, `Decrease ${c}'s priority to ${priority}`);
       colorschemes[c] = priority;
-      await vars.g.set(denops, "spectrism_priority", priority);
+      await vars.g.set(denops, "lumiris_priority", priority);
       await saveColorschemes();
       await denops.dispatcher.change();
     },
@@ -348,8 +348,8 @@ export async function main(denops: Denops): Promise<void> {
       call denops#plugin#wait_async('${denops.name}', function('denops#notify', ['${denops.name}', a:method, a:params]))
     endfunction
     command! ChangeColorscheme call s:${denops.name}_notify('change', [])
-    command! EnableSpectrism call s:${denops.name}_notify('enable', [])
-    command! DisableSpectrism call s:${denops.name}_notify('disable', [])
+    command! EnableLumiris call s:${denops.name}_notify('enable', [])
+    command! DisableLumiris call s:${denops.name}_notify('disable', [])
     command! OpenColorschemeSetting call s:${denops.name}_notify('open', [])
     command! ResetColorschemeSetting call s:${denops.name}_notify('reset', [])
     command! DisableThisColorscheme call s:${denops.name}_notify('disableColorscheme', [])
@@ -374,5 +374,5 @@ export async function main(denops: Denops): Promise<void> {
   setTimeout(async () => {
     await denops.dispatcher.change();
   }, 100);
-  clog("spectrism has loaded");
+  clog("lumiris has loaded");
 }
