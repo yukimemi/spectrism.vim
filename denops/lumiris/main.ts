@@ -18,8 +18,8 @@ import { dir } from "jsr:@cross/dir@1.1.0";
 import { ensureDir } from "jsr:@std/fs@1.0.18";
 import { filterEntries, mapEntries } from "jsr:@std/collections@1.1.1";
 import { parse, stringify } from "jsr:@std/toml@1.0.7";
-import { walk } from "jsr:@std/fs@1.0.17";
-import { z } from "npm:zod@3.25.42";
+import { walk } from "jsr:@std/fs@1.0.18";
+import { z } from "npm:zod@3.25.45";
 
 const defaultPriority = 100;
 
